@@ -28,7 +28,13 @@ public class RandomResponse {
             "( ͡ᵔ ͜ʖ ͡ᵔ )",
             "ฅ^•ﻌ•^ฅ",
             "✌.|•͡˘‿•͡˘|.✌",
-            "◕‿↼"
+            "◕‿↼",
+            "UwU",
+            "OwO",
+            "Now THIS is podracing!",
+            "ur mom",
+            "https://www.youtube.com/watch?v=hUsRR3Ac0Ro", // Hey stinky
+            "https://tenor.com/bC74M.gif" // Crying spongebob gif
     };
 
     public static String getRandom() {
