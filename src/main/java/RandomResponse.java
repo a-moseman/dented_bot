@@ -11,7 +11,24 @@ public class RandomResponse {
                     "2 eggs\n" +
                     "1 cup sugar\n" +
                     "1/3 cup cocoa powder\n" +
-                    "2 teaspoon vanilla extract"
+                    "2 teaspoon vanilla extract",
+            "( ͡° ͜ʖ ͡°)",
+            "(˵ ͡° ͜ʖ ͡°˵)",
+            "┬┴┤( ͡⚆ل͜├┬┴┬ ",
+            "ᕦ( ͡° ͜ʖ ͡°)ᕤ",
+            "( ͡° ͜ʖ ͡ – ✧)",
+            "( ͡° ͜ʖ ͡°)╭∩╮",
+            "( ＾◡＾)っ✂❤",
+            "( ͠° ͟ʖ ͠°)",
+            "٩(^ᴗ^)۶",
+            "ᕕ( ͡° ͜ʖ ͡°)ᕗ",
+            "( ಠ ͜ʖಠ)",
+            "(ง ͠° ͟ل͜ ͡°)ง",
+            "(͠≖ ͜ʖ͠≖)",
+            "( ͡ᵔ ͜ʖ ͡ᵔ )",
+            "ฅ^•ﻌ•^ฅ",
+            "✌.|•͡˘‿•͡˘|.✌",
+            "◕‿↼"
     };
 
     public static String getRandom() {
