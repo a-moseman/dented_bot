@@ -11,11 +11,13 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        // TODO: implement
         if (!event.getAuthor().isBot()) {
             MessageChannel channel = event.getChannel();
-            channel.sendMessage(bot.getBotResponse(event.getMessage().getContentRaw()))
-                .queue();
+            String botResponse = bot.getBotResponse(event.getMessage().getContentRaw());
+            if (!botResponse.equals("")) {
+                channel.sendMessage(bot.getBotResponse(event.getMessage().getContentRaw()))
+                        .queue();
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ public class Bot {
 
     private Random random;
 
+    private long startNanoTime;
+
     public Bot(String token) {
         try {
             JDA jda = JDABuilder.createDefault(token)
@@ -18,12 +20,27 @@ public class Bot {
             exception.printStackTrace();
         }
         random = new Random();
+        startNanoTime = System.nanoTime();
     }
 
     public String getBotResponse(String userMessage) {
-        if (random.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
+        if (userMessage.charAt(0) == '>') {
+            return getCommandResponse(userMessage);
+        }
+        else if (random.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
             return RandomResponse.getRandom();
         }
-        return userMessage;
+        return "";
+    }
+
+    private String getCommandResponse(String userMessage) {
+        if (userMessage.equals(">info")) {
+            return "Info:\n" +
+                    "Current Runtime: " + (Util.convertToReadableTime(System.nanoTime() - startNanoTime)) +
+                    "Language: Java 17.0.1" +
+                    "Libraries: JDA" +
+                    "Author: Andrew Moseman";
+        }
+        return userMessage + " is not a valid command.";
     }
 }
