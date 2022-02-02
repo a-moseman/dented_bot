@@ -36,10 +36,10 @@ public class Bot {
     private String getCommandResponse(String userMessage) {
         if (userMessage.equals(">info")) {
             return "Info:\n" +
-                    "Current Runtime: " + (Util.convertToReadableTime(System.nanoTime() - startNanoTime)) +
-                    "Language: Java 17.0.1" +
-                    "Libraries: JDA" +
-                    "Author: Andrew Moseman";
+                    "Current Runtime: " + (Util.convertToReadableTime(System.nanoTime() - startNanoTime)) + "\n" +
+                    "Language: Java 11\n" +
+                    "Libraries: JDA\n" +
+                    "Author: Andrew Moseman\n";
         }
         return userMessage + " is not a valid command.";
     }
