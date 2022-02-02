@@ -1,12 +1,10 @@
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.InputStream;
+import org.json.simple.parser.ParseException;
+
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Loader {
     private JSONObject jo;
@@ -16,20 +14,29 @@ public class Loader {
         try {
             // Source: https://stackoverflow.com/questions/14089146/file-loading-by-getclass-getresource
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(resource);
-            File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
-            tempFile.deleteOnExit();
-            FileOutputStream out = new FileOutputStream(tempFile);
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
+            try {
+                assert in != null;
+                File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
+                tempFile.deleteOnExit();
+                FileOutputStream out = new FileOutputStream(tempFile);
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+                try {
+                    jo = (JSONObject) new JSONParser().parse(new FileReader(tempFile));
+                }
+                catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
-
-            // Read file as json
-            jo = (JSONObject) new JSONParser().parse(new FileReader(tempFile));
+            catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
-        catch (Exception exception) {
-            exception.printStackTrace();
+        catch (IOException e) {
+            e.printStackTrace();
         }
         return this;
     }
@@ -37,9 +44,8 @@ public class Loader {
     public ArrayList<String> getResponses() {
         JSONArray ja = (JSONArray) jo.get("responses");
         ArrayList<String> data = new ArrayList<>();
-        Iterator iterator = ja.iterator();
-        while (iterator.hasNext()) {
-            data.add((String) iterator.next());
+        for (Object o : ja) {
+            data.add((String) o);
         }
         return data;
     }

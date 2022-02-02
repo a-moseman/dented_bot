@@ -5,22 +5,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Bot {
-    private final char COMMAND_CHARACTER = '$';
-
     private final double CHANCE_OF_RANDOM_RESPONSE;
-
-    private ArrayList<String> responses;
-
-    private Random random;
-
-    private long startNanoTime;
+    private final ArrayList<String> RESPONSES;
+    private final Random RANDOM;
+    private final long START_NANO_TIME;
 
     public Bot(double chanceOfRandomResponse) {
         this.CHANCE_OF_RANDOM_RESPONSE = chanceOfRandomResponse;
-        random = new Random();
-        startNanoTime = System.nanoTime();
-
-        responses = new Loader()
+        this.RANDOM = new Random();
+        this.START_NANO_TIME = System.nanoTime();
+        this.RESPONSES = new Loader()
                 .load(this, "responses.json")
                 .getResponses();
     }
@@ -38,29 +32,27 @@ public class Bot {
     }
 
     public String getBotResponse(String userMessage) {
+        char COMMAND_CHARACTER = '$';
         if (userMessage.charAt(0) == COMMAND_CHARACTER) {
             return getCommandResponse(userMessage.substring(1));
         }
-        else if (random.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
-            return responses.get(random.nextInt(responses.size()));
+        else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
+            return RESPONSES.get(RANDOM.nextInt(RESPONSES.size()));
         }
         return "";
     }
 
     private String getCommandResponse(String userMessage) {
-        switch (userMessage) {
-            case "help":
-                return "Commands:\n" +
-                        "$help - get a list of commands\n" +
-                        "$info - get bot information and diagnostics";
-            case "info":
-                return "Info:\n" +
-                        "Current Runtime: " + (Util.convertToReadableTime(System.nanoTime() - startNanoTime)) + "\n" +
-                        "Language: Java 11\n" +
-                        "Libraries: JDA\n" +
-                        "Author: Andrew Moseman\n";
-            default:
-                return userMessage + " is not a valid command.";
-        }
+        return switch (userMessage) {
+            case "help" -> "Commands:\n" +
+                    "$help - get a list of commands\n" +
+                    "$info - get bot information and diagnostics";
+            case "info" -> "Info:\n" +
+                    "Current Runtime: " + (Util.convertToReadableTime(System.nanoTime() - START_NANO_TIME)) + "\n" +
+                    "Language: Java 11\n" +
+                    "Libraries: JDA\n" +
+                    "Author: Andrew Moseman\n";
+            default -> userMessage + " is not a valid command.";
+        };
     }
 }
