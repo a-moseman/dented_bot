@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class Bot {
-    private double CHANCE_OF_RANDOM_RESPONSE = 0.5;
+    private double CHANCE_OF_RANDOM_RESPONSE = 0.05;
 
     private ArrayList<String> responses;
 
