@@ -34,7 +34,7 @@ public class Bot {
     public String getBotResponse(String userMessage) {
         char COMMAND_CHARACTER = '$';
         if (userMessage.charAt(0) == COMMAND_CHARACTER) {
-            return getCommandResponse(userMessage.substring(1));
+            return getCommandResponse(Util.split(userMessage.substring(1)));
         }
         else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
             return RESPONSES.get(RANDOM.nextInt(RESPONSES.size()));
@@ -42,8 +42,8 @@ public class Bot {
         return "";
     }
 
-    private String getCommandResponse(String userMessage) {
-        return switch (userMessage) {
+    private String getCommandResponse(String[] command) {
+        return switch (command[0]) {
             case "help" -> "Commands:\n" +
                     "$help - get a list of commands\n" +
                     "$info - get bot information and diagnostics";
@@ -52,7 +52,7 @@ public class Bot {
                     "Language: Java 11\n" +
                     "Libraries: JDA\n" +
                     "Author: Andrew Moseman\n";
-            default -> userMessage + " is not a valid command.";
+            default -> "$" + String.join(" ", command) + " is not a valid command.";
         };
     }
 }
