@@ -4,7 +4,7 @@ import javax.security.auth.login.LoginException;
 import java.util.Random;
 
 public class Bot {
-    private double CHANCE_OF_RANDOM_RESPONSE = 0.01;
+    private double CHANCE_OF_RANDOM_RESPONSE = 0.5;
 
     private Random random;
 
@@ -24,7 +24,7 @@ public class Bot {
     }
 
     public String getBotResponse(String userMessage) {
-        if (userMessage.charAt(0) == '>') {
+        if (userMessage.charAt(0) == '$') {
             return getCommandResponse(userMessage);
         }
         else if (random.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {

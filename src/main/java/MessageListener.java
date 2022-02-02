@@ -14,8 +14,9 @@ public class MessageListener extends ListenerAdapter {
         if (!event.getAuthor().isBot()) {
             MessageChannel channel = event.getChannel();
             String botResponse = bot.getBotResponse(event.getMessage().getContentRaw());
+            System.out.println(botResponse);
             if (!botResponse.equals("")) {
-                channel.sendMessage(bot.getBotResponse(event.getMessage().getContentRaw()))
+                channel.sendMessage(botResponse)
                         .queue();
             }
         }
