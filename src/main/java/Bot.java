@@ -4,7 +4,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import javax.security.auth.login.LoginException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -31,9 +34,23 @@ public class Bot {
         random = new Random();
         startNanoTime = System.nanoTime();
 
+        this.getClass().getResource("/responses.jar");
+
         // Load responses from file
         try {
-            JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader("build/resources/main/responses.json"));
+            // Source: https://stackoverflow.com/questions/14089146/file-loading-by-getclass-getresource
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("responses.json");
+            File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
+            tempFile.deleteOnExit();
+            FileOutputStream out = new FileOutputStream(tempFile);
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+
+            // Read file as json
+            JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(tempFile));
             JSONArray ja = (JSONArray) jo.get("responses");
             responses = new ArrayList<>();
             Iterator iterator = ja.iterator();
