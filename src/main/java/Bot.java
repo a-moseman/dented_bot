@@ -34,7 +34,7 @@ public class Bot {
     }
 
     private String getCommandResponse(String userMessage) {
-        if (userMessage.equals(">info")) {
+        if (userMessage.equals("$info")) {
             return "Info:\n" +
                     "Current Runtime: " + (Util.convertToReadableTime(System.nanoTime() - startNanoTime)) + "\n" +
                     "Language: Java 11\n" +
