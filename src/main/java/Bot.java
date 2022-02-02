@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class Bot {
-    private double CHANCE_OF_RANDOM_RESPONSE = 0.05;
+    private double CHANCE_OF_RANDOM_RESPONSE;
 
     private ArrayList<String> responses;
 
@@ -18,7 +18,7 @@ public class Bot {
 
     private long startNanoTime;
 
-    public Bot(String token) {
+    public Bot(String token, double chanceOfRandomResponse) {
         try {
             JDA jda = JDABuilder.createDefault(token)
                     .build();
@@ -27,6 +27,7 @@ public class Bot {
         catch (LoginException exception) {
             exception.printStackTrace();
         }
+        this.CHANCE_OF_RANDOM_RESPONSE = chanceOfRandomResponse;
         random = new Random();
         startNanoTime = System.nanoTime();
 
