@@ -12,14 +12,14 @@ import java.util.Hashtable;
 public class MessageListener extends ListenerAdapter {
     private Bot bot;
 
-    public boolean sendingSurveyMessage;
-    public Hashtable<String, ArrayList<String>> userSurveyMessageIDs;
+    public boolean sendingSurveyMessage; // TODO: remove usage
+    public String newSurveyName; // TODO: remove usage
+
     public Hashtable<String, ArrayList<String>> questions;
-    public Hashtable<String, Hashtable<String, ArrayList<String>>> surveys;
+    public Hashtable<String, Survey> surveys;
 
     public MessageListener(Bot bot) {
         this.bot = bot;
-        this.userSurveyMessageIDs = new Hashtable<>();
         this.surveys = new Hashtable<>();
         this.questions = new Hashtable<>();
     }
@@ -33,21 +33,21 @@ public class MessageListener extends ListenerAdapter {
 
                 if (sendingSurveyMessage) { // Work around to send specific messages for surveys
                     String authID = event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator();
-                    surveys.put(authID, new Hashtable<>());
-                    ArrayList<Button> buttons = new ArrayList<>();
+                    surveys.put(authID, new Survey(newSurveyName));
                     ArrayList<String> messageIDs = new ArrayList<>();
-                    for (String response : botResponse) {
+                    for (int i = 0; i < botResponse.length - 1; i++) {
+                        String response = botResponse[i];
                         ArrayList<String> answers = new ArrayList<>();
                         questions.put(authID + response, answers);
-                        surveys.get(authID).put(authID + response, answers);
+                        surveys.get(authID).addQuestion(authID + response, answers);
                         messageIDs.add(authID + response);
                         Button button = Button.primary(authID + response, "vote");
                         channel.sendMessage(response)
                                 .setActionRow(button)
                                 .queue();
                     }
-                    userSurveyMessageIDs.put(authID, messageIDs);
                     sendingSurveyMessage = false;
+                    newSurveyName = "";
                 }
                 else {
                     for (String response : botResponse) {
