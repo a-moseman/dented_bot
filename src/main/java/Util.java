@@ -16,10 +16,6 @@ public class Util {
         StringBuilder content = new StringBuilder();
         for (int i = 0; i < string.length(); i++) {
             if (string.charAt(i) == '"') {
-                if (inQuotes) {
-                    contents.add(content.toString());
-                    content = new StringBuilder();
-                }
                 inQuotes = !inQuotes;
             }
             else if (!inQuotes && string.charAt(i) == ' ') {
