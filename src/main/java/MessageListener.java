@@ -31,6 +31,7 @@ public class MessageListener extends ListenerAdapter {
             if (contents.length > 0) {
 
                 if (isSurvey) { // Work around to send specific messages for surveys
+                    channel.sendMessage(botResponse.getSurveyName() + ":").queue();
                     surveys.put(authorUUID, new Survey(botResponse.getSurveyName()));
                     ArrayList<String> messageIDs = new ArrayList<>();
                     for (int i = 0; i < contents.length - 1; i++) {
