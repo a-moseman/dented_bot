@@ -30,6 +30,7 @@ public class Util {
                 content.append(string.charAt(i));
             }
         }
+        contents.add(content.toString()); // Add the last part of the string
         return contents.toArray(new String[0]);
     }
 }
