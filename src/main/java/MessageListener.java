@@ -36,18 +36,17 @@ public class MessageListener extends ListenerAdapter {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         super.onButtonInteraction(event);
-        String authorId = generateAuthorUUID(event);
+        String authorUUID = generateAuthorUUID(event);
         SurveyQuestion question = bot.getSurveyManager().getQuestion(event.getButton().getId());
+        event.deferEdit().queue(); // Acknowledge button press but don't respond
         if (question == null) {
-            event.reply("This survey has already closed").queue();
-            return;
+            sendMessage(event.getChannel(), "<@" + event.getUser().getId() + "> this survey is closed");
         }
-        if (question.containsVote(authorId)) {
-            event.reply("You can only vote once per choice").queue();
+        else if (question.containsVote(authorUUID)) {
+            sendMessage(event.getChannel(),"<@" + event.getUser().getId() + "> you may only vote once per question");
         }
         else {
-            bot.getSurveyManager().getQuestion(event.getButton().getId()).addVote(authorId);
-            event.reply(event.getUser().getName() + " has voted").queue();
+            bot.getSurveyManager().getQuestion(event.getButton().getId()).addVote(authorUUID);
         }
     }
 
