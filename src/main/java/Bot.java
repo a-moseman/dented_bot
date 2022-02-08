@@ -136,10 +136,15 @@ public class Bot {
      * @return
      */
     private BotResponse surveyOpen(String[] command, String authorUUID) {
-        String[] choices = command[3].split(",");
-        ArrayList<String> tempList = new ArrayList<String>(Arrays.asList(choices));
-        tempList.add(command[2]);
-        return new BotResponse(tempList.toArray(new String[0])).setAsSurvey(command[2]);
+        if (messageListener.surveys.get(authorUUID) == null) {
+            String[] choices = command[3].split(",");
+            ArrayList<String> tempList = new ArrayList<String>(Arrays.asList(choices));
+            tempList.add(command[2]);
+            return new BotResponse(tempList.toArray(new String[0])).setAsSurvey(command[2]);
+        }
+        else {
+            return new BotResponse(new String[]{"You already have a survey open"});
+        }
     }
 
     /**
@@ -151,10 +156,10 @@ public class Bot {
     private BotResponse surveyClose(String[] command, String authorUUID) {
         // TODO: optimize
         Hashtable<String, Survey> surveys = messageListener.surveys;
-        Hashtable<String, ArrayList<String>> questions = surveys.get(authorUUID).getQuestionsAndVotes();
-        if (questions == null) {
+        if (surveys.get(authorUUID) == null) {
             return new BotResponse(new String[]{"You do not have an open survey"});
         }
+        Hashtable<String, ArrayList<String>> questions = surveys.get(authorUUID).getQuestionsAndVotes();
         Iterator<String> iter = questions.keys().asIterator();
         ArrayList<String> questionNames = new ArrayList<>();
         while (iter.hasNext()) {

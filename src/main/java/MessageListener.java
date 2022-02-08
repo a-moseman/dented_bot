@@ -10,7 +10,7 @@ import java.util.Hashtable;
 public class MessageListener extends ListenerAdapter {
     private Bot bot;
 
-    public Hashtable<String, ArrayList<String>> surveyQuestions;
+    public Hashtable<String, ArrayList<String>> surveyQuestions; // TODO: implement solution that does not do this
     public Hashtable<String, Survey> surveys;
 
     public MessageListener(Bot bot) {
