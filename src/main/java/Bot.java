@@ -182,6 +182,9 @@ public class Bot {
             response[i + 1] = topVoted.get(i).replaceFirst(authorUUID, "") + " - " + questions.get(topVoted.get(i)).size();
         }
         surveys.remove(authorUUID); //close the survey
+        for (String name : questionNames) {
+            messageListener.surveyQuestions.remove(name);
+        }
         return new BotResponse(response);
     }
 }
