@@ -48,23 +48,16 @@ public class MessageListener extends ListenerAdapter {
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         super.onButtonInteraction(event);
         String authorId = event.getUser().getName() + "#" + event.getUser().getDiscriminator();
-        boolean userAlreadyVoted = false;
-        ArrayList<String> question = bot.getSurveyQuestions().get(event.getButton().getId());
+        SurveyQuestion question = bot.getSurveyManager().getQuestion(event.getButton().getId());
         if (question == null) {
             event.reply("This survey has already closed").queue();
             return;
         }
-        for (String user : question) {
-            if (user.equals(authorId)) {
-                userAlreadyVoted = true;
-                break;
-            }
-        }
-        if (userAlreadyVoted) {
+        if (question.containsVote(authorId)) {
             event.reply("You can only vote once per choice").queue();
         }
         else {
-            bot.getSurveyQuestions().get(event.getButton().getId()).add(authorId);
+            bot.getSurveyManager().getQuestion(event.getButton().getId()).addVote(authorId);
             event.reply(event.getUser().getName() + " has voted").queue();
         }
     }

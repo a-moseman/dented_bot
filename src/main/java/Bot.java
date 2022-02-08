@@ -1,3 +1,4 @@
+import com.iwebpp.crypto.TweetNaclFast;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import javax.security.auth.login.LoginException;
@@ -12,8 +13,7 @@ public class Bot {
     private final Random RANDOM;
     private final long START_NANO_TIME;
 
-    private Hashtable<String, Survey> surveys;
-    private Hashtable<String, ArrayList<String>> surveyQuestions;
+    private SurveyManager surveyManager;
 
     /**
      * Instantiate a new bot.
@@ -26,8 +26,7 @@ public class Bot {
         this.RESPONSES = new Loader()
                 .load(this, "responses.json")
                 .getResponses();
-        this.surveys = new Hashtable<>();
-        this.surveyQuestions = new Hashtable<>();
+        this.surveyManager = new SurveyManager();
     }
 
     /**
@@ -138,15 +137,14 @@ public class Bot {
      * @return
      */
     private BotResponse surveyOpen(String[] command, String authorUUID) {
-        if (surveys.get(authorUUID) == null) {
+        if (!surveyManager.contains(authorUUID)) {
             String[] choices = command[3].split(",");
             ArrayList<String> tempList = new ArrayList<String>(Arrays.asList(choices));
             tempList.add(command[2]);
-            surveys.put(authorUUID, new Survey(command[2]));
+            surveyManager.add(authorUUID, new Survey(command[2]));
             for (String choice : choices) {
                 ArrayList<String> votes = new ArrayList<>();
-                surveyQuestions.put(authorUUID + choice, votes);
-                surveys.get(authorUUID).addQuestion(authorUUID + choice, votes);
+                surveyManager.addQuestion(authorUUID, choice);
             }
             return new BotResponse(tempList.toArray(new String[0])).setAsSurvey(command[2]);
         }
@@ -162,45 +160,20 @@ public class Bot {
      * @return
      */
     private BotResponse surveyClose(String[] command, String authorUUID) {
-        // TODO: optimize
-        if (surveys.get(authorUUID) == null) {
+        if (!surveyManager.contains(authorUUID)) {
             return new BotResponse(new String[]{"You do not have an open survey"});
         }
-        Hashtable<String, ArrayList<String>> questions = surveys.get(authorUUID).getQuestionsAndVotes();
-        Iterator<String> iter = questions.keys().asIterator();
-        ArrayList<String> questionNames = new ArrayList<>();
-        while (iter.hasNext()) {
-            questionNames.add(iter.next());
+        ArrayList<String> topVotedQuestions = surveyManager.getTopVotedQuestions(authorUUID);
+        String[] response = new String[topVotedQuestions.size() + 1];
+        response[0] = "Results for " + authorUUID + "'s survey, " + surveyManager.get(authorUUID).getName() + ":";
+        for (int i = 0; i < topVotedQuestions.size(); i++) {
+            response[i + 1] = topVotedQuestions.get(i).replaceFirst(authorUUID, "") + " - " + surveyManager.getQuestion(topVotedQuestions.get(i)).getVotes();
         }
-        ArrayList<String> topVoted = new ArrayList<>();
-        int most = 0;
-        for (int i = 0; i < questionNames.size(); i++) {
-            String name = questionNames.get(i);
-            int votes = questions.get(name).size();
-            if (votes >= most) {
-                most = votes;
-                topVoted.add(name);
-                for (int j = 0; j < topVoted.size(); j++) {
-                    if (questions.get(topVoted.get(j)).size() < most) {
-                        topVoted.remove(j);
-                        j--;
-                    }
-                }
-            }
-        }
-        String[] response = new String[topVoted.size() + 1];
-        response[0] = "Results for " + authorUUID + "'s survey, " + surveys.get(authorUUID).getName() + ":";
-        for (int i = 0; i < topVoted.size(); i++) {
-            response[i + 1] = topVoted.get(i).replaceFirst(authorUUID, "") + " - " + questions.get(topVoted.get(i)).size();
-        }
-        surveys.remove(authorUUID); //close the survey
-        for (String name : questionNames) {
-            surveyQuestions.remove(name);
-        }
+        surveyManager.closeSurvey(authorUUID);
         return new BotResponse(response);
     }
 
-    public Hashtable<String, ArrayList<String>> getSurveyQuestions() {
-        return surveyQuestions;
+    public SurveyManager getSurveyManager() {
+        return surveyManager;
     }
 }
