@@ -12,7 +12,8 @@ public class Bot {
     private final Random RANDOM;
     private final long START_NANO_TIME;
 
-    private MessageListener messageListener;
+    private Hashtable<String, Survey> surveys;
+    private Hashtable<String, ArrayList<String>> surveyQuestions;
 
     /**
      * Instantiate a new bot.
@@ -25,6 +26,8 @@ public class Bot {
         this.RESPONSES = new Loader()
                 .load(this, "responses.json")
                 .getResponses();
+        this.surveys = new Hashtable<>();
+        this.surveyQuestions = new Hashtable<>();
     }
 
     /**
@@ -36,8 +39,7 @@ public class Bot {
         try {
             JDA jda = JDABuilder.createDefault(token)
                     .build();
-            messageListener = new MessageListener(this);
-            jda.addEventListener(messageListener);
+            jda.addEventListener(new MessageListener(this));
         }
         catch (LoginException exception) {
             exception.printStackTrace();
@@ -136,10 +138,16 @@ public class Bot {
      * @return
      */
     private BotResponse surveyOpen(String[] command, String authorUUID) {
-        if (messageListener.surveys.get(authorUUID) == null) {
+        if (surveys.get(authorUUID) == null) {
             String[] choices = command[3].split(",");
             ArrayList<String> tempList = new ArrayList<String>(Arrays.asList(choices));
             tempList.add(command[2]);
+            surveys.put(authorUUID, new Survey(command[2]));
+            for (String choice : choices) {
+                ArrayList<String> votes = new ArrayList<>();
+                surveyQuestions.put(authorUUID + choice, votes);
+                surveys.get(authorUUID).addQuestion(authorUUID + choice, votes);
+            }
             return new BotResponse(tempList.toArray(new String[0])).setAsSurvey(command[2]);
         }
         else {
@@ -155,7 +163,6 @@ public class Bot {
      */
     private BotResponse surveyClose(String[] command, String authorUUID) {
         // TODO: optimize
-        Hashtable<String, Survey> surveys = messageListener.surveys;
         if (surveys.get(authorUUID) == null) {
             return new BotResponse(new String[]{"You do not have an open survey"});
         }
@@ -188,8 +195,12 @@ public class Bot {
         }
         surveys.remove(authorUUID); //close the survey
         for (String name : questionNames) {
-            messageListener.surveyQuestions.remove(name);
+            surveyQuestions.remove(name);
         }
         return new BotResponse(response);
+    }
+
+    public Hashtable<String, ArrayList<String>> getSurveyQuestions() {
+        return surveyQuestions;
     }
 }

@@ -5,18 +5,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 public class MessageListener extends ListenerAdapter {
     private Bot bot;
 
-    public Hashtable<String, ArrayList<String>> surveyQuestions; // TODO: implement solution that does not do this
-    public Hashtable<String, Survey> surveys;
-
     public MessageListener(Bot bot) {
         this.bot = bot;
-        this.surveys = new Hashtable<>();
-        this.surveyQuestions = new Hashtable<>();
     }
 
     @Override
@@ -32,14 +26,9 @@ public class MessageListener extends ListenerAdapter {
 
                 if (isSurvey) { // Work around to send specific messages for surveys
                     channel.sendMessage(botResponse.getSurveyName() + ":").queue();
-                    surveys.put(authorUUID, new Survey(botResponse.getSurveyName()));
-                    ArrayList<String> messageIDs = new ArrayList<>();
                     for (int i = 0; i < contents.length - 1; i++) {
                         String response = contents[i];
                         ArrayList<String> answers = new ArrayList<>();
-                        surveyQuestions.put(authorUUID + response, answers);
-                        surveys.get(authorUUID).addQuestion(authorUUID + response, answers);
-                        messageIDs.add(authorUUID + response);
                         Button button = Button.primary(authorUUID + response, "vote");
                         channel.sendMessage(response)
                                 .setActionRow(button)
@@ -60,7 +49,7 @@ public class MessageListener extends ListenerAdapter {
         super.onButtonInteraction(event);
         String authorId = event.getUser().getName() + "#" + event.getUser().getDiscriminator();
         boolean userAlreadyVoted = false;
-        ArrayList<String> question = surveyQuestions.get(event.getButton().getId());
+        ArrayList<String> question = bot.getSurveyQuestions().get(event.getButton().getId());
         if (question == null) {
             event.reply("This survey has already closed").queue();
             return;
@@ -75,7 +64,7 @@ public class MessageListener extends ListenerAdapter {
             event.reply("You can only vote once per choice").queue();
         }
         else {
-            surveyQuestions.get(event.getButton().getId()).add(authorId);
+            bot.getSurveyQuestions().get(event.getButton().getId()).add(authorId);
             event.reply(event.getUser().getName() + " has voted").queue();
         }
     }
