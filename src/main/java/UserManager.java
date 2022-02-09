@@ -21,7 +21,7 @@ public class UserManager {
         return users.get(id).incrementActivity();
     }
 
-    public double getUserScore(String id) {
+    public double getUserEXP(String id) {
         return users.get(id).getExp();
     }
 

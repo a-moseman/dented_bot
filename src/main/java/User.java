@@ -63,7 +63,7 @@ public class User implements Serializable {
         long old = lastActivityTime;
         lastActivityTime = System.nanoTime();
         long ns = lastActivityTime - old;
-        updateScore((double) ns / 1_000_000_000);
+        updateEXP((double) ns / 1_000_000_000);
         boolean leveledUp = updateLevel();
 
         updateAge();
@@ -77,7 +77,7 @@ public class User implements Serializable {
         return level > lastLevel;
     }
 
-    private void updateScore(double secs) {
+    private void updateEXP(double secs) {
         exp += calculateEXPGain(secs);
     }
 
