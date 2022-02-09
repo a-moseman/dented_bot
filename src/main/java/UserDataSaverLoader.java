@@ -18,4 +18,8 @@ public class UserDataSaverLoader {
         out.close();
         file.close();
     }
+
+    public static boolean exists() throws Exception {
+        return  new File("users.data").exists();
+    }
 }
