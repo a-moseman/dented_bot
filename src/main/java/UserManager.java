@@ -22,7 +22,7 @@ public class UserManager {
     }
 
     public double getUserScore(String id) {
-        return users.get(id).getScore();
+        return users.get(id).getExp();
     }
 
     public long getUserLevel(String id) {
@@ -34,8 +34,10 @@ public class UserManager {
         StringBuilder string = new StringBuilder();
         string.append("<@" + id + "> Stats:\n");
         string.append("Level: " + user.getLevel() + "\n");
-        string.append("Experience: " + user.getScore() + "\n");
+        string.append("Experience: " + user.getExp() + "\n");
+        string.append("Presence: " + user.getPresence() + "\n");
         string.append("Sent Messages: " + user.getActivity() + "\n");
+        string.append("Age: " + Util.convertToReadableTime(user.getAge()));
         return string.toString();
     }
 }
