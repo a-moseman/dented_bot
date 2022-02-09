@@ -120,7 +120,8 @@ public class Bot {
                 "$help - get a list of commands\n" +
                 "$info - get bot information and diagnostics\n" +
                 "$survey open <name> <choices> - open a survey\n" +
-                "$survey close - close your survey\n\n" +
+                "$survey close - close your survey\n" +
+                "$stats - get a summary of your stats\n\n" +
                 "Notes:\n" +
                 "Lists must be contained in quotes with the elements separated by only commas.\n" +
                 "Spaces are seen as delimiters unless within quotes."});
