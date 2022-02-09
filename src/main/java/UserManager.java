@@ -3,12 +3,26 @@ import java.util.Hashtable;
 public class UserManager {
     private Hashtable<String, User> users;
 
-    public UserManager(Hashtable<String, User> users) {
-        this.users = users;
-    }
-
     public UserManager() {
         this.users = new Hashtable<>();
+    }
+
+    public void save() {
+        try {
+            UserDataSaverLoader.save(users);
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void load() {
+        try {
+            users = UserDataSaverLoader.load();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public void addUser(String name, String discriminator, String id) {

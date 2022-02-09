@@ -29,8 +29,20 @@ public class Bot {
                 .getResponses();
 
         this.surveyManager = new SurveyManager();
-        // TODO: implement loading from file (and saving to file)
         this.userManager = new UserManager();
+
+        try {
+            if (UserDataSaverLoader.exists()) {
+                this.userManager.load();
+            }
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void save() {
+        userManager.save();
     }
 
     public boolean incrementUserActivity(String name, String discriminator, String id) {

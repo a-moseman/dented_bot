@@ -7,9 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class MessageListener extends ListenerAdapter {
     private Bot bot;
+    private long lastActivityTime;
 
     public MessageListener(Bot bot) {
         this.bot = bot;
+        this.lastActivityTime = System.nanoTime();
     }
 
     @Override
@@ -35,6 +37,13 @@ public class MessageListener extends ListenerAdapter {
                 else {
                     sendMessages(channel, contents);
                 }
+            }
+
+            // Save every 12 hours on receiving a message
+            if ((double) (System.nanoTime() - lastActivityTime) / 1_000_000_000 > 60 * 60) {
+                bot.save();
+                lastActivityTime = System.nanoTime();
+                sendMessage(event.getChannel(), "Notice: saved");
             }
         }
     }
