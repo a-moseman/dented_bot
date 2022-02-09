@@ -5,13 +5,13 @@ public class User implements Serializable {
     private final String DISCRIMINATOR;
     private final String ID;
     private final String UUID;
-
     private final long FIRST_SEEN; // Time in nanoseconds when the user was first seen
-    private long age; // How long has the bot known the user in nanoseconds
-    private long activity; // How many messages the user has sent
-    private long lastActivityTime;
-    private double score;
-    private long level;
+
+    private long age = 0; // How long has the bot known the user in nanoseconds
+    private long activity = 0; // How many messages the user has sent
+    private long lastActivityTime = 0;
+    private double score = 0;
+    private long level = 0;
 
     public User(String name, String discriminator, String id) {
         this.NAME = name;
@@ -66,7 +66,7 @@ public class User implements Serializable {
 
     private boolean updateLevel() {
         long lastLevel = level;
-        level = (long) (Math.log10(score + 1) / Math.log10(2));
+        level = (long) (Math.log10(score + 1) / Math.log10(2) / 2);
         return level > lastLevel;
     }
 
@@ -75,7 +75,7 @@ public class User implements Serializable {
     }
 
     private double calculateQuality(long ns) {
-        return (double) 1 / (-((double) ns / 1000000000 * 60) - 1) + 1;
+        return (double) 1 / (-((double) ns / 1_000_000_000 * 60) - 1) + 1;
     }
 
     private void updateAge() {

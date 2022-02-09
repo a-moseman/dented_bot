@@ -16,8 +16,14 @@ public class MessageListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (!event.getAuthor().isBot()) {
             MessageChannel channel = event.getChannel();
+            String authorID = event.getAuthor().getId();
             String authorUUID = generateAuthorUUID(event);
-            BotResponse botResponse = bot.getBotResponse(event.getMessage().getContentRaw(), authorUUID);
+
+            if (bot.incrementUserActivity(event.getAuthor().getName(), event.getAuthor().getDiscriminator(), authorID)) {
+                sendMessage(channel, "<@" + authorID + "> has leveled up to level " + bot.getUserLevel(authorID));
+            }
+
+            BotResponse botResponse = bot.getBotResponse(event.getMessage().getContentRaw(), authorID, authorUUID);
             String[] contents = botResponse.getContents();
             if (contents.length > 0) {
                 if (botResponse.isSurvey()) {
