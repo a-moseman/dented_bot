@@ -10,8 +10,9 @@ public class User implements Serializable {
     private long age = 0; // How long has the bot known the user in nanoseconds
     private long activity = 0; // How many messages the user has sent
     private long lastActivityTime = 0;
-    private double score = 0;
+    private double exp = 0;
     private long level = 0;
+    private double presence = 0;
 
     public User(String name, String discriminator, String id) {
         this.NAME = name;
@@ -41,41 +42,54 @@ public class User implements Serializable {
         return activity;
     }
 
-    public double getScore() {
-        return score;
+    public double getExp() {
+        return exp;
     }
 
     public long getLevel() {
         return level;
     }
 
-    public long getFirstSeen() {
-        return FIRST_SEEN;
+    public double getPresence() {
+        return presence;
+    }
+
+    public long getAge() {
+        return age;
     }
 
     public boolean incrementActivity() {
         activity++;
-        long temp = lastActivityTime;
+        long old = lastActivityTime;
         lastActivityTime = System.nanoTime();
-        long d = lastActivityTime - temp;
-        updateScore(d);
+        long ns = lastActivityTime - old;
+        updateScore((double) ns / 1_000_000_000);
         boolean leveledUp = updateLevel();
+
         updateAge();
+        updatePresence();
         return leveledUp;
     }
 
     private boolean updateLevel() {
         long lastLevel = level;
-        level = (long) (Math.log10(score + 1) / Math.log10(2) / 2);
+        level = (long) (Math.log10(exp + 1) / Math.log10(2));
         return level > lastLevel;
     }
 
-    private void updateScore(long ns) {
-        score += calculateQuality(ns);
+    private void updateScore(double secs) {
+        exp += calculateEXPGain(secs);
     }
 
-    private double calculateQuality(long ns) {
-        return (double) 1 / (-((double) ns / 1_000_000_000 * 60) - 1) + 1;
+    /**
+     * presence = activity / days
+     */
+    private void updatePresence() {
+        presence = (double) activity / ((double) age / 1_000_000_000 / 60 / 60 / 24 + 1);
+    }
+
+    private double calculateEXPGain(double secs) {
+        return (double) Math.min(secs / 60, 1);
     }
 
     private void updateAge() {
