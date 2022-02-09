@@ -14,6 +14,7 @@ public class Bot {
     private final long START_NANO_TIME;
 
     private SurveyManager surveyManager;
+    private UserManager userManager;
 
     /**
      * Instantiate a new bot.
@@ -26,7 +27,19 @@ public class Bot {
         this.RESPONSES = new Loader()
                 .load(this, "responses.json")
                 .getResponses();
+
         this.surveyManager = new SurveyManager();
+        // TODO: implement loading from file (and saving to file)
+        this.userManager = new UserManager();
+    }
+
+    public boolean incrementUserActivity(String name, String discriminator, String id) {
+        userManager.addUser(name, discriminator, id);
+        return userManager.incrementUserActivity(id);
+    }
+
+    public long getUserLevel(String id) {
+        return userManager.getUserLevel(id);
     }
 
     /**
@@ -52,10 +65,10 @@ public class Bot {
      * @param authorUUID
      * @return
      */
-    public BotResponse getBotResponse(String userMessage, String authorUUID) {
+    public BotResponse getBotResponse(String userMessage, String authorID, String authorUUID) {
         char COMMAND_CHARACTER = '$';
         if (userMessage.charAt(0) == COMMAND_CHARACTER) {
-            return doCommand(Util.split(userMessage.substring(1)), authorUUID);
+            return doCommand(Util.split(userMessage.substring(1)), authorID, authorUUID);
         }
         else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
             return new BotResponse(new String[]{RESPONSES.get(RANDOM.nextInt(RESPONSES.size()))});
@@ -69,7 +82,7 @@ public class Bot {
      * @param authorUUID
      * @return
      */
-    private BotResponse doCommand(String[] command, String authorUUID) {
+    private BotResponse doCommand(String[] command, String authorID, String authorUUID) {
         switch (command[0]) {
             case "help":
                 return help(command, authorUUID);
@@ -77,6 +90,8 @@ public class Bot {
                 return info(command, authorUUID);
             case "survey":
                 return survey(command, authorUUID);
+            case "stats":
+                return stats(command, authorID, authorUUID);
             default:
                 return new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
         }
@@ -172,6 +187,10 @@ public class Bot {
         }
         surveyManager.closeSurvey(authorUUID);
         return new BotResponse(response);
+    }
+
+    private BotResponse stats(String[] command, String authorID, String authorUUID) {
+        return new BotResponse(new String[]{userManager.getUserSummary(authorID)});
     }
 
     public SurveyManager getSurveyManager() {
