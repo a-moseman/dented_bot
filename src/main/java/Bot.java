@@ -9,11 +9,11 @@ import java.util.*;
  */
 public class Bot {
     private char commandCharacter = '$';
-    private final double CHANCE_OF_RANDOM_RESPONSE;
-    private final ArrayList<String> RESPONSES;
-    private final Random RANDOM;
     private final long START_NANO_TIME;
+    private final double CHANCE_OF_RANDOM_RESPONSE;
+    private final Random RANDOM;
 
+    private RandomResponseGenerator randomResponseGenerator;
     private SurveyManager surveyManager;
     private UserManager userManager;
 
@@ -22,13 +22,10 @@ public class Bot {
      * @param chanceOfRandomResponse
      */
     public Bot(double chanceOfRandomResponse) {
+        this.START_NANO_TIME = System.nanoTime();
         this.CHANCE_OF_RANDOM_RESPONSE = chanceOfRandomResponse;
         this.RANDOM = new Random();
-        this.START_NANO_TIME = System.nanoTime();
-        this.RESPONSES = new Loader()
-                .load(this, "responses.json")
-                .getResponses();
-
+        this.randomResponseGenerator = new RandomResponseGenerator(this.RANDOM);
         this.surveyManager = new SurveyManager();
         this.userManager = new UserManager();
 
@@ -81,7 +78,7 @@ public class Bot {
             return doCommand(Util.split(userMessage.substring(1)), authorID, authorUUID);
         }
         else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
-            return new BotResponse(new String[]{RESPONSES.get(RANDOM.nextInt(RESPONSES.size()))});
+            return new BotResponse(new String[]{randomResponseGenerator.get()});
         }
         return new BotResponse(new String[]{});
     }
