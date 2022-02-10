@@ -6,11 +6,11 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
 public class MessageListener extends ListenerAdapter {
-    private Bot bot;
+    private final Bot BOT;
     private long lastActivityTime;
 
     public MessageListener(Bot bot) {
-        this.bot = bot;
+        this.BOT = bot;
         this.lastActivityTime = System.nanoTime();
     }
 
@@ -21,11 +21,11 @@ public class MessageListener extends ListenerAdapter {
             String authorID = event.getAuthor().getId();
             String authorUUID = generateAuthorUUID(event);
 
-            if (bot.incrementUserActivity(event.getAuthor().getName(), event.getAuthor().getDiscriminator(), authorID)) {
-                sendMessage(channel, "<@" + authorID + "> has leveled up to level " + bot.getUserLevel(authorID));
+            if (BOT.incrementUserActivity(event.getAuthor().getName(), event.getAuthor().getDiscriminator(), authorID)) {
+                sendMessage(channel, "<@" + authorID + "> has leveled up to level " + BOT.getUserLevel(authorID));
             }
 
-            BotResponse botResponse = bot.getBotResponse(event.getMessage().getContentRaw(), authorID, authorUUID);
+            BotResponse botResponse = BOT.getBotResponse(event.getMessage().getContentRaw(), authorID, authorUUID);
             String[] contents = botResponse.getContents();
             if (contents.length > 0) {
                 if (botResponse.isSurvey()) {
@@ -41,7 +41,7 @@ public class MessageListener extends ListenerAdapter {
 
             // Save every 12 hours on receiving a message
             if ((double) (System.nanoTime() - lastActivityTime) / 1_000_000_000 > 60 * 60) {
-                bot.save();
+                BOT.save();
                 lastActivityTime = System.nanoTime();
                 sendMessage(event.getChannel(), "Notice: saved");
             }
@@ -52,7 +52,7 @@ public class MessageListener extends ListenerAdapter {
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         super.onButtonInteraction(event);
         String authorUUID = generateAuthorUUID(event);
-        SurveyQuestion question = bot.getSurveyManager().getQuestion(event.getButton().getId());
+        SurveyQuestion question = BOT.getSurveyQuestion(event.getButton().getId());
         event.deferEdit().queue(); // Acknowledge button press but don't respond
         if (question == null) {
             sendMessage(event.getChannel(), "<@" + event.getUser().getId() + "> this survey is closed");
@@ -61,7 +61,7 @@ public class MessageListener extends ListenerAdapter {
             sendMessage(event.getChannel(),"<@" + event.getUser().getId() + "> you may only vote once per question");
         }
         else {
-            bot.getSurveyManager().getQuestion(event.getButton().getId()).addVote(authorUUID);
+            BOT.getSurveyQuestion(event.getButton().getId()).addVote(authorUUID);
         }
     }
 
