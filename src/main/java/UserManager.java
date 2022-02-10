@@ -1,6 +1,8 @@
 import java.util.Hashtable;
 
 public class UserManager {
+    private final String PATH = "users.data";
+
     private Hashtable<String, User> users;
 
     public UserManager() {
@@ -9,7 +11,7 @@ public class UserManager {
 
     public void save() {
         try {
-            UserDataSaverLoader.save(users);
+            FileManager.save(PATH, users);
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -18,7 +20,9 @@ public class UserManager {
 
     public void load() {
         try {
-            users = UserDataSaverLoader.load();
+            if (FileManager.exists(PATH)) {
+                users = (Hashtable<String, User>) FileManager.load(PATH);
+            }
         }
         catch (Exception exception) {
             exception.printStackTrace();
