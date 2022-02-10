@@ -1,4 +1,3 @@
-import com.iwebpp.crypto.TweetNaclFast;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import javax.security.auth.login.LoginException;
@@ -13,9 +12,9 @@ public class Bot {
     private final double CHANCE_OF_RANDOM_RESPONSE;
     private final Random RANDOM;
 
-    private RandomResponseGenerator randomResponseGenerator;
-    private SurveyManager surveyManager;
-    private UserManager userManager;
+    private final RandomResponseGenerator RANDOM_RESPONSE_GENERATOR;
+    private final SurveyManager SURVEY_MANAGER;
+    private final UserManager USER_MANAGER;
 
     /**
      * Instantiate a new bot.
@@ -25,12 +24,12 @@ public class Bot {
         this.START_NANO_TIME = System.nanoTime();
         this.CHANCE_OF_RANDOM_RESPONSE = chanceOfRandomResponse;
         this.RANDOM = new Random();
-        this.randomResponseGenerator = new RandomResponseGenerator(this.RANDOM);
-        this.surveyManager = new SurveyManager();
-        this.userManager = new UserManager();
+        this.RANDOM_RESPONSE_GENERATOR = new RandomResponseGenerator(this.RANDOM);
+        this.SURVEY_MANAGER = new SurveyManager();
+        this.USER_MANAGER = new UserManager();
 
         try {
-            this.userManager.load();
+            this.USER_MANAGER.load();
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -38,16 +37,16 @@ public class Bot {
     }
 
     public void save() {
-        userManager.save();
+        USER_MANAGER.save();
     }
 
     public boolean incrementUserActivity(String name, String discriminator, String id) {
-        userManager.addUser(name, discriminator, id);
-        return userManager.incrementUserActivity(id);
+        USER_MANAGER.addUser(name, discriminator, id);
+        return USER_MANAGER.incrementUserActivity(id);
     }
 
     public long getUserLevel(String id) {
-        return userManager.getUserLevel(id);
+        return USER_MANAGER.getUserLevel(id);
     }
 
     /**
@@ -78,7 +77,7 @@ public class Bot {
             return doCommand(Util.split(userMessage.substring(1)), authorID, authorUUID);
         }
         else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
-            return new BotResponse(new String[]{randomResponseGenerator.get()});
+            return new BotResponse(new String[]{RANDOM_RESPONSE_GENERATOR.get()});
         }
         return new BotResponse(new String[]{});
     }
@@ -90,20 +89,14 @@ public class Bot {
      * @return
      */
     private BotResponse doCommand(String[] command, String authorID, String authorUUID) {
-        switch (command[0]) {
-            case "help":
-                return help(command, authorUUID);
-            case "info":
-                return info(command, authorUUID);
-            case "survey":
-                return survey(command, authorUUID);
-            case "stats":
-                return stats(command, authorID, authorUUID);
-            case "changecmdchar":
-                return changeCommandCharacter(command, authorID, authorUUID);
-            default:
-                return new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
-        }
+        return switch (command[0]) {
+            case "help" -> help(command, authorUUID);
+            case "info" -> info(command, authorUUID);
+            case "survey" -> survey(command, authorUUID);
+            case "stats" -> stats(command, authorID, authorUUID);
+            case "changecmdchar" -> changeCommandCharacter(command, authorID, authorUUID);
+            default -> new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
+        };
     }
 
     /**
@@ -147,14 +140,11 @@ public class Bot {
      * @return
      */
     private BotResponse survey(String[] command, String authorUUID) {
-        switch (command[1]) {
-            case "open":
-                return surveyOpen(command, authorUUID);
-            case "close":
-                return surveyClose(command, authorUUID);
-            default:
-                return new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
-        }
+        return switch (command[1]) {
+            case "open" -> surveyOpen(command, authorUUID);
+            case "close" -> surveyClose(command, authorUUID);
+            default -> new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
+        };
     }
 
     /**
@@ -164,14 +154,13 @@ public class Bot {
      * @return
      */
     private BotResponse surveyOpen(String[] command, String authorUUID) {
-        if (!surveyManager.contains(authorUUID)) {
+        if (!SURVEY_MANAGER.contains(authorUUID)) {
             String[] choices = command[3].split(",");
-            ArrayList<String> tempList = new ArrayList<String>(Arrays.asList(choices));
+            ArrayList<String> tempList = new ArrayList<>(Arrays.asList(choices));
             tempList.add(command[2]);
-            surveyManager.add(authorUUID, new Survey(command[2]));
+            SURVEY_MANAGER.add(authorUUID, new Survey(command[2]));
             for (String choice : choices) {
-                ArrayList<String> votes = new ArrayList<>();
-                surveyManager.addQuestion(authorUUID, choice);
+                SURVEY_MANAGER.addQuestion(authorUUID, choice);
             }
             return new BotResponse(tempList.toArray(new String[0])).setAsSurvey(command[2]);
         }
@@ -187,21 +176,21 @@ public class Bot {
      * @return
      */
     private BotResponse surveyClose(String[] command, String authorUUID) {
-        if (!surveyManager.contains(authorUUID)) {
+        if (!SURVEY_MANAGER.contains(authorUUID)) {
             return new BotResponse(new String[]{"You do not have an open survey"});
         }
-        ArrayList<String> topVotedQuestions = surveyManager.getTopVotedQuestions(authorUUID);
+        ArrayList<String> topVotedQuestions = SURVEY_MANAGER.getTopVotedQuestions(authorUUID);
         String[] response = new String[topVotedQuestions.size() + 1];
-        response[0] = "Results for " + authorUUID + "'s survey, " + surveyManager.get(authorUUID).getName() + ":";
+        response[0] = "Results for " + authorUUID + "'s survey, " + SURVEY_MANAGER.get(authorUUID).getName() + ":";
         for (int i = 0; i < topVotedQuestions.size(); i++) {
-            response[i + 1] = topVotedQuestions.get(i).replaceFirst(authorUUID, "") + " - " + surveyManager.getQuestion(topVotedQuestions.get(i)).getVotes();
+            response[i + 1] = topVotedQuestions.get(i).replaceFirst(authorUUID, "") + " - " + SURVEY_MANAGER.getQuestion(topVotedQuestions.get(i)).getVotes();
         }
-        surveyManager.closeSurvey(authorUUID);
+        SURVEY_MANAGER.closeSurvey(authorUUID);
         return new BotResponse(response);
     }
 
     private BotResponse stats(String[] command, String authorID, String authorUUID) {
-        return new BotResponse(new String[]{userManager.getUserSummary(authorID)});
+        return new BotResponse(new String[]{USER_MANAGER.getUserSummary(authorID)});
     }
 
     private BotResponse changeCommandCharacter(String[] command, String authorID, String authorUUID) {
@@ -209,7 +198,7 @@ public class Bot {
         return new BotResponse(new String[]{"Command character changed to " + commandCharacter});
     }
 
-    public SurveyManager getSurveyManager() {
-        return surveyManager;
+    public SurveyQuestion getSurveyQuestion(String uuid) {
+        return SURVEY_MANAGER.getQuestion(uuid);
     }
 }
