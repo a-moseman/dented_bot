@@ -32,9 +32,7 @@ public class Bot {
         this.userManager = new UserManager();
 
         try {
-            if (UserDataSaverLoader.exists()) {
-                this.userManager.load();
-            }
+            this.userManager.load();
         }
         catch (Exception exception) {
             exception.printStackTrace();
