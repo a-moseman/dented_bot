@@ -8,6 +8,7 @@ import java.util.*;
  * Class for the bot.
  */
 public class Bot {
+    private char commandCharacter = '$';
     private final double CHANCE_OF_RANDOM_RESPONSE;
     private final ArrayList<String> RESPONSES;
     private final Random RANDOM;
@@ -76,8 +77,7 @@ public class Bot {
      * @return
      */
     public BotResponse getBotResponse(String userMessage, String authorID, String authorUUID) {
-        char COMMAND_CHARACTER = '$';
-        if (userMessage.charAt(0) == COMMAND_CHARACTER) {
+        if (userMessage.charAt(0) == commandCharacter) {
             return doCommand(Util.split(userMessage.substring(1)), authorID, authorUUID);
         }
         else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
@@ -102,6 +102,8 @@ public class Bot {
                 return survey(command, authorUUID);
             case "stats":
                 return stats(command, authorID, authorUUID);
+            case "changecmdchar":
+                return changeCommandCharacter(command, authorID, authorUUID);
             default:
                 return new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
         }
@@ -119,7 +121,8 @@ public class Bot {
                 "$info - get bot information and diagnostics\n" +
                 "$survey open <name> <choices> - open a survey\n" +
                 "$survey close - close your survey\n" +
-                "$stats - get a summary of your stats\n\n" +
+                "$stats - get a summary of your stats\n" +
+                "$changecmdchar <character> - change the command character\n\n" +
                 "Notes:\n" +
                 "Lists must be contained in quotes with the elements separated by only commas.\n" +
                 "Spaces are seen as delimiters unless within quotes."});
@@ -202,6 +205,11 @@ public class Bot {
 
     private BotResponse stats(String[] command, String authorID, String authorUUID) {
         return new BotResponse(new String[]{userManager.getUserSummary(authorID)});
+    }
+
+    private BotResponse changeCommandCharacter(String[] command, String authorID, String authorUUID) {
+        commandCharacter = command[1].charAt(0);
+        return new BotResponse(new String[]{"Command character changed to " + commandCharacter});
     }
 
     public SurveyManager getSurveyManager() {
