@@ -18,7 +18,7 @@ public class Bot {
 
     /**
      * Instantiate a new bot.
-     * @param chanceOfRandomResponse
+     * @param chanceOfRandomResponse The chance of a random response.
      */
     public Bot(double chanceOfRandomResponse) {
         this.START_NANO_TIME = System.nanoTime();
@@ -36,23 +36,38 @@ public class Bot {
         }
     }
 
+    /**
+     * Save.
+     */
     public void save() {
         USER_MANAGER.save();
     }
 
+    /**
+     * Increment a user's activity.
+     * @param name The user's name.
+     * @param discriminator The user's discriminator.
+     * @param id The user's id.
+     * @return boolean
+     */
     public boolean incrementUserActivity(String name, String discriminator, String id) {
         USER_MANAGER.addUser(name, discriminator, id);
         return USER_MANAGER.incrementUserActivity(id);
     }
 
+    /**
+     * Get the level of a user.
+     * @param id The user's id.
+     * @return long
+     */
     public long getUserLevel(String id) {
         return USER_MANAGER.getUserLevel(id);
     }
 
     /**
      * Set up the JDA wrapper for the bot.
-     * @param token
-     * @return
+     * @param token The bot token.
+     * @return Bot
      */
     public Bot setupJDA(String token) {
         try {
@@ -68,9 +83,9 @@ public class Bot {
 
     /**
      * Get the bot's response based on the user command.
-     * @param userMessage
-     * @param authorUUID
-     * @return
+     * @param userMessage The user's message.
+     * @param authorUUID The author's uuid.
+     * @return BotResponse
      */
     public BotResponse getBotResponse(String userMessage, String authorID, String authorUUID) {
         if (userMessage.charAt(0) == commandCharacter) {
@@ -84,9 +99,9 @@ public class Bot {
 
     /**
      * Do a provided command.
-     * @param command
-     * @param authorUUID
-     * @return
+     * @param command The command and its arguments.
+     * @param authorUUID The author's uuid.
+     * @return BotResponse
      */
     private BotResponse doCommand(String[] command, String authorID, String authorUUID) {
         return switch (command[0]) {
@@ -101,9 +116,9 @@ public class Bot {
 
     /**
      * Do the help command.
-     * @param command
-     * @param authorUUID
-     * @return
+     * @param command The command and its arguments.
+     * @param authorUUID The author's uuid.
+     * @return BotResponse
      */
     private BotResponse help(String[] command, String authorUUID) {
         return new BotResponse(new String[]{"Commands:\n" +
@@ -120,9 +135,9 @@ public class Bot {
 
     /**s
      * Do the info command.
-     * @param command
-     * @param authorUUID
-     * @return
+     * @param command The command and its argument.
+     * @param authorUUID The author's uuid.
+     * @return BotResponse
      */
     private BotResponse info(String[] command, String authorUUID) {
         return new BotResponse(new String[]{"Info:\n" +
@@ -135,9 +150,9 @@ public class Bot {
 
     /**
      * Do the survey command.
-     * @param command
-     * @param authorUUID
-     * @return
+     * @param command The command and its argument.
+     * @param authorUUID The author's uuid.
+     * @return BotResponse
      */
     private BotResponse survey(String[] command, String authorUUID) {
         return switch (command[1]) {
@@ -149,9 +164,9 @@ public class Bot {
 
     /**
      * Do the survey open command.
-     * @param command
-     * @param authorUUID
-     * @return
+     * @param command The command and its arguments.
+     * @param authorUUID The author's uuid.
+     * @return BotResponse
      */
     private BotResponse surveyOpen(String[] command, String authorUUID) {
         if (!SURVEY_MANAGER.contains(authorUUID)) {
@@ -171,9 +186,9 @@ public class Bot {
 
     /**
      * Do the survey close command.
-     * @param command
-     * @param authorUUID
-     * @return
+     * @param command The command and its arguments.
+     * @param authorUUID The author's uuid
+     * @return BotResponse
      */
     private BotResponse surveyClose(String[] command, String authorUUID) {
         if (!SURVEY_MANAGER.contains(authorUUID)) {
@@ -189,6 +204,13 @@ public class Bot {
         return new BotResponse(response);
     }
 
+    /**
+     * Do the stats command.
+     * @param command The command and its arguments.
+     * @param authorID The author's id.
+     * @param authorUUID The author's uuid.
+     * @return BotResponse
+     */
     private BotResponse stats(String[] command, String authorID, String authorUUID) {
         return new BotResponse(new String[]{USER_MANAGER.getUserSummary(authorID)});
     }
