@@ -40,4 +40,28 @@ public class Attributes {
     public long getCharisma() {
         return charisma;
     }
+
+    public void addStrength(long amount) {
+        strength += amount;
+    }
+
+    public void addConstitution(long amount) {
+        constitution += amount;
+    }
+
+    public void addDexterity(long amount) {
+        dexterity += amount;
+    }
+
+    public void addIntelligence(long amount) {
+        intelligence += amount;
+    }
+
+    public void addWisdom(long amount) {
+        wisdom += amount;
+    }
+
+    public void addCharisma(long amount) {
+        charisma += amount;
+    }
 }

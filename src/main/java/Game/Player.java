@@ -14,4 +14,24 @@ public class Player {
         this.EQUIPMENT = new Equipment();
         this.INVENTORY = new Inventory();
     }
+
+    public String getName() {
+        return NAME;
+    }
+
+    public Attributes getAttributes() {
+        return ATTRIBUTES;
+    }
+
+    public Stats getStats() {
+        return STATS;
+    }
+
+    public Equipment getEquipment() {
+        return EQUIPMENT;
+    }
+
+    public Inventory getInventory() {
+        return INVENTORY;
+    }
 }

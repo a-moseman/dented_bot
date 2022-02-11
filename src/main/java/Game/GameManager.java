@@ -3,10 +3,14 @@ package Game;
 import java.util.Hashtable;
 
 public class GameManager {
-    private Hashtable<String, Game> games;
+    private Hashtable<String, Player> players;
 
     public GameManager() {
-        this.games = new Hashtable<String, Game>();
+        this.players = new Hashtable<String, Player>();
+    }
+
+    public void addPlayer(String id, Player player) {
+        players.put(id, player);
     }
 
     public void load() {
