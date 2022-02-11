@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 
 public class Util {
+    public static long NANOSECONDS_PER_SECOND = 1_000_000_000;
+
     public static String convertToReadableTime(Long nanoSeconds){
-        long tempSec = nanoSeconds / 1000000000;
+        long tempSec = nanoSeconds / NANOSECONDS_PER_SECOND;
         long sec = tempSec % 60;
         long min = (tempSec / 60) % 60;
         long hour = (tempSec /(60 * 60)) % 24;
