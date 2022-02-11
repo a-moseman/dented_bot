@@ -110,7 +110,7 @@ public class Bot {
             case "survey" -> survey(command);
             case "stats" -> stats(command);
             case "changecmdchar" -> changeCommandCharacter(command);
-            default -> new BotResponse(new String[]{"$" + String.join(" ", command.getCommandText()) + " is not a valid command."});
+            default -> Error.INVALID_CMD;
         };
     }
 
@@ -155,7 +155,7 @@ public class Bot {
         return switch (command.getCommandText()[1]) {
             case "open" -> surveyOpen(command);
             case "close" -> surveyClose(command);
-            default -> new BotResponse(new String[]{"$" + String.join(" ", command.getCommandText()) + " is not a valid command."});
+            default -> Error.INVALID_CMD;
         };
     }
 
@@ -165,6 +165,9 @@ public class Bot {
      * @return BotResponse
      */
     private BotResponse surveyOpen(Command command) {
+        if (command.getCommandText().length < 4) {
+            return Error.MISSING_ARG;
+        }
         if (!SURVEY_MANAGER.contains(command.getAuthorUUID())) {
             String[] choices = command.getCommandText()[3].split(",");
             ArrayList<String> tempList = new ArrayList<>(Arrays.asList(choices));
@@ -214,7 +217,13 @@ public class Bot {
      * @return BotResponse.
      */
     private BotResponse changeCommandCharacter(Command command) {
-        commandCharacter = command.getCommandText()[1].charAt(0);
+        if (command.getCommandText()[1].length() > 1) {
+            return Error.INVALID_ARG;
+        }
+        if (command.getCommandText().length == 1) {
+            return Error.MISSING_ARG;
+        }
+        char commandCharacter = command.getCommandText()[1].charAt(0);
         return new BotResponse(new String[]{"Command character changed to " + commandCharacter});
     }
 
