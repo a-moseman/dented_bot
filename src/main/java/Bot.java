@@ -95,7 +95,7 @@ public class Bot {
         else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
             return new BotResponse(new String[]{RANDOM_RESPONSE_GENERATOR.get()});
         }
-        return new BotResponse(new String[]{});
+        return null;
     }
 
     /**
