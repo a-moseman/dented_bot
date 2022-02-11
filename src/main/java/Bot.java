@@ -104,14 +104,20 @@ public class Bot {
      * @return BotResponse
      */
     private BotResponse doCommand(Command command) {
-        return switch (command.getCommandText()[0]) {
-            case "help" -> help(command);
-            case "info" -> info(command);
-            case "survey" -> survey(command);
-            case "stats" -> stats(command);
-            case "changecmdchar" -> changeCommandCharacter(command);
-            default -> Error.INVALID_CMD;
-        };
+        switch (command.getCommandText()[0]){
+            case "help":
+                return help(command);
+            case "info":
+                return info(command);
+            case "survey":
+                return survey(command);
+            case "stats":
+                return stats(command);
+            case "changecmdchar":
+                return changeCommandCharacter(command);
+            default:
+                return Error.INVALID_CMD;
+        }
     }
 
     /**
@@ -161,11 +167,14 @@ public class Bot {
         if (command.getCommandText().length < 2) {
             return Error.MISSING_ARG;
         }
-        return switch (command.getCommandText()[1]) {
-            case "open" -> surveyOpen(command);
-            case "close" -> surveyClose(command);
-            default -> Error.INVALID_CMD;
-        };
+        switch (command.getCommandText()[1]) {
+            case "open":
+                return surveyOpen(command);
+            case "close":
+                return surveyClose(command);
+            default:
+                return Error.INVALID_CMD;
+        }
     }
 
     /**
