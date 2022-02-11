@@ -87,9 +87,10 @@ public class Bot {
      * @param authorUUID The author's uuid.
      * @return BotResponse
      */
-    public BotResponse getBotResponse(String userMessage, String authorID, String authorUUID) {
+    public BotResponse getBotResponse(String userMessage, String authorName, String authorID, String authorUUID) {
         if (userMessage.charAt(0) == commandCharacter) {
-            return doCommand(Util.split(userMessage.substring(1)), authorID, authorUUID);
+            Command command = new Command(Util.split(userMessage.substring(1)), authorName, authorID, authorUUID);
+            return doCommand(command);
         }
         else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
             return new BotResponse(new String[]{RANDOM_RESPONSE_GENERATOR.get()});
@@ -99,28 +100,26 @@ public class Bot {
 
     /**
      * Do a provided command.
-     * @param command The command and its arguments.
-     * @param authorUUID The author's uuid.
+     * @param command The command.
      * @return BotResponse
      */
-    private BotResponse doCommand(String[] command, String authorID, String authorUUID) {
-        return switch (command[0]) {
-            case "help" -> help(command, authorUUID);
-            case "info" -> info(command, authorUUID);
-            case "survey" -> survey(command, authorUUID);
-            case "stats" -> stats(command, authorID, authorUUID);
-            case "changecmdchar" -> changeCommandCharacter(command, authorID, authorUUID);
-            default -> new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
+    private BotResponse doCommand(Command command) {
+        return switch (command.getCommandText()[0]) {
+            case "help" -> help(command);
+            case "info" -> info(command);
+            case "survey" -> survey(command);
+            case "stats" -> stats(command);
+            case "changecmdchar" -> changeCommandCharacter(command);
+            default -> new BotResponse(new String[]{"$" + String.join(" ", command.getCommandText()) + " is not a valid command."});
         };
     }
 
     /**
      * Do the help command.
-     * @param command The command and its arguments.
-     * @param authorUUID The author's uuid.
+     * @param command The command.
      * @return BotResponse
      */
-    private BotResponse help(String[] command, String authorUUID) {
+    private BotResponse help(Command command) {
         return new BotResponse(new String[]{"Commands:\n" +
                 "$help - get a list of commands\n" +
                 "$info - get bot information and diagnostics\n" +
@@ -135,11 +134,10 @@ public class Bot {
 
     /**s
      * Do the info command.
-     * @param command The command and its argument.
-     * @param authorUUID The author's uuid.
+     * @param command The command.
      * @return BotResponse
      */
-    private BotResponse info(String[] command, String authorUUID) {
+    private BotResponse info(Command command) {
         return new BotResponse(new String[]{"Info:\n" +
                 "Runtime: " + (Util.convertToReadableTime(System.nanoTime() - START_NANO_TIME)) + "\n" +
                 "Language: Java 11\n" +
@@ -150,34 +148,32 @@ public class Bot {
 
     /**
      * Do the survey command.
-     * @param command The command and its argument.
-     * @param authorUUID The author's uuid.
+     * @param command The command.
      * @return BotResponse
      */
-    private BotResponse survey(String[] command, String authorUUID) {
-        return switch (command[1]) {
-            case "open" -> surveyOpen(command, authorUUID);
-            case "close" -> surveyClose(command, authorUUID);
-            default -> new BotResponse(new String[]{"$" + String.join(" ", command) + " is not a valid command."});
+    private BotResponse survey(Command command) {
+        return switch (command.getCommandText()[1]) {
+            case "open" -> surveyOpen(command);
+            case "close" -> surveyClose(command);
+            default -> new BotResponse(new String[]{"$" + String.join(" ", command.getCommandText()) + " is not a valid command."});
         };
     }
 
     /**
      * Do the survey open command.
-     * @param command The command and its arguments.
-     * @param authorUUID The author's uuid.
+     * @param command The command.
      * @return BotResponse
      */
-    private BotResponse surveyOpen(String[] command, String authorUUID) {
-        if (!SURVEY_MANAGER.contains(authorUUID)) {
-            String[] choices = command[3].split(",");
+    private BotResponse surveyOpen(Command command) {
+        if (!SURVEY_MANAGER.contains(command.getAuthorUUID())) {
+            String[] choices = command.getCommandText()[3].split(",");
             ArrayList<String> tempList = new ArrayList<>(Arrays.asList(choices));
-            tempList.add(command[2]);
-            SURVEY_MANAGER.add(authorUUID, new Survey(command[2]));
+            tempList.add(command.getCommandText()[2]);
+            SURVEY_MANAGER.add(command.getAuthorUUID(), new Survey(command.getCommandText()[2]));
             for (String choice : choices) {
-                SURVEY_MANAGER.addQuestion(authorUUID, choice);
+                SURVEY_MANAGER.addQuestion(command.getAuthorUUID(), choice);
             }
-            return new BotResponse(tempList.toArray(new String[0])).setAsSurvey(command[2]);
+            return new BotResponse(tempList.toArray(new String[0])).setAsSurvey(command.getCommandText()[2]);
         }
         else {
             return new BotResponse(new String[]{"You already have a survey open"});
@@ -186,40 +182,47 @@ public class Bot {
 
     /**
      * Do the survey close command.
-     * @param command The command and its arguments.
-     * @param authorUUID The author's uuid
+     * @param command The command.
      * @return BotResponse
      */
-    private BotResponse surveyClose(String[] command, String authorUUID) {
-        if (!SURVEY_MANAGER.contains(authorUUID)) {
+    private BotResponse surveyClose(Command command) {
+        if (!SURVEY_MANAGER.contains(command.getAuthorUUID())) {
             return new BotResponse(new String[]{"You do not have an open survey"});
         }
-        ArrayList<String> topVotedQuestions = SURVEY_MANAGER.getTopVotedQuestions(authorUUID);
+        ArrayList<String> topVotedQuestions = SURVEY_MANAGER.getTopVotedQuestions(command.getAuthorUUID());
         String[] response = new String[topVotedQuestions.size() + 1];
-        response[0] = "Results for " + authorUUID + "'s survey, " + SURVEY_MANAGER.get(authorUUID).getName() + ":";
+        response[0] = "Results for " + command.getAuthorName() + "'s survey, " + SURVEY_MANAGER.get(command.getAuthorUUID()).getName() + ":";
         for (int i = 0; i < topVotedQuestions.size(); i++) {
-            response[i + 1] = topVotedQuestions.get(i).replaceFirst(authorUUID, "") + " - " + SURVEY_MANAGER.getQuestion(topVotedQuestions.get(i)).getVotes();
+            response[i + 1] = topVotedQuestions.get(i).replaceFirst(command.getAuthorUUID(), "") + " - " + SURVEY_MANAGER.getQuestion(topVotedQuestions.get(i)).getVotes();
         }
-        SURVEY_MANAGER.closeSurvey(authorUUID);
+        SURVEY_MANAGER.closeSurvey(command.getAuthorUUID());
         return new BotResponse(response);
     }
 
     /**
      * Do the stats command.
-     * @param command The command and its arguments.
-     * @param authorID The author's id.
-     * @param authorUUID The author's uuid.
+     * @param command The command.
      * @return BotResponse
      */
-    private BotResponse stats(String[] command, String authorID, String authorUUID) {
-        return new BotResponse(new String[]{USER_MANAGER.getUserSummary(authorID)});
+    private BotResponse stats(Command command) {
+        return new BotResponse(new String[]{USER_MANAGER.getUserSummary(command.getAuthorID())});
     }
 
-    private BotResponse changeCommandCharacter(String[] command, String authorID, String authorUUID) {
-        commandCharacter = command[1].charAt(0);
+    /**
+     * Do the change command character command.
+     * @param command The command.
+     * @return BotResponse.
+     */
+    private BotResponse changeCommandCharacter(Command command) {
+        commandCharacter = command.getCommandText()[1].charAt(0);
         return new BotResponse(new String[]{"Command character changed to " + commandCharacter});
     }
 
+    /**
+     * Get a survey question.
+     * @param uuid The questions uuid.
+     * @return SurveyQuestion.
+     */
     public SurveyQuestion getSurveyQuestion(String uuid) {
         return SURVEY_MANAGER.getQuestion(uuid);
     }
