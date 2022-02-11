@@ -20,12 +20,13 @@ public class MessageListener extends ListenerAdapter {
             MessageChannel channel = event.getChannel();
             String authorID = event.getAuthor().getId();
             String authorUUID = generateAuthorUUID(event);
+            String authorName = event.getAuthor().getName();
 
-            if (BOT.incrementUserActivity(event.getAuthor().getName(), event.getAuthor().getDiscriminator(), authorID)) {
+            if (BOT.incrementUserActivity(authorName, event.getAuthor().getDiscriminator(), authorID)) {
                 sendMessage(channel, "<@" + authorID + "> has leveled up to level " + BOT.getUserLevel(authorID));
             }
 
-            BotResponse botResponse = BOT.getBotResponse(event.getMessage().getContentRaw(), authorID, authorUUID);
+            BotResponse botResponse = BOT.getBotResponse(event.getMessage().getContentRaw(), authorName, authorID, authorUUID);
             String[] contents = botResponse.getContents();
             if (contents.length > 0) {
                 if (botResponse.isSurvey()) {
