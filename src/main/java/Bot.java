@@ -120,6 +120,9 @@ public class Bot {
      * @return BotResponse
      */
     private BotResponse help(Command command) {
+        if (command.getCommandText().length > 1) {
+            return Error.EXTRA_ARG;
+        }
         return new BotResponse(new String[]{"Commands:\n" +
                 "$help - get a list of commands\n" +
                 "$info - get bot information and diagnostics\n" +
@@ -138,6 +141,9 @@ public class Bot {
      * @return BotResponse
      */
     private BotResponse info(Command command) {
+        if (command.getCommandText().length > 1) {
+            return Error.EXTRA_ARG;
+        }
         return new BotResponse(new String[]{"Info:\n" +
                 "Runtime: " + (Util.convertToReadableTime(System.nanoTime() - START_NANO_TIME)) + "\n" +
                 "Language: Java 11\n" +
@@ -171,6 +177,9 @@ public class Bot {
         if (command.getCommandText().length < 4) {
             return Error.MISSING_ARG;
         }
+        if (command.getCommandText().length > 4) {
+            return Error.EXTRA_ARG;
+        }
         if (!SURVEY_MANAGER.contains(command.getAuthorUUID())) {
             String[] choices = command.getCommandText()[3].split(",");
             ArrayList<String> tempList = new ArrayList<>(Arrays.asList(choices));
@@ -192,6 +201,9 @@ public class Bot {
      * @return BotResponse
      */
     private BotResponse surveyClose(Command command) {
+        if (command.getCommandText().length > 2) {
+            return Error.EXTRA_ARG;
+        }
         if (!SURVEY_MANAGER.contains(command.getAuthorUUID())) {
             return new BotResponse(new String[]{"You do not have an open survey"});
         }
@@ -211,6 +223,9 @@ public class Bot {
      * @return BotResponse
      */
     private BotResponse stats(Command command) {
+        if (command.getCommandText().length > 1) {
+            return Error.EXTRA_ARG;
+        }
         return new BotResponse(new String[]{USER_MANAGER.getUserSummary(command.getAuthorID())});
     }
 
@@ -220,11 +235,14 @@ public class Bot {
      * @return BotResponse.
      */
     private BotResponse changeCommandCharacter(Command command) {
+        if (command.getCommandText().length < 1) {
+            return Error.MISSING_ARG;
+        }
+        if (command.getCommandText().length > 1) {
+            return Error.EXTRA_ARG;
+        }
         if (command.getCommandText()[1].length() > 1) {
             return Error.INVALID_ARG;
-        }
-        if (command.getCommandText().length == 1) {
-            return Error.MISSING_ARG;
         }
         char commandCharacter = command.getCommandText()[1].charAt(0);
         return new BotResponse(new String[]{"Command character changed to " + commandCharacter});
