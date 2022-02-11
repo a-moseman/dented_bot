@@ -152,6 +152,9 @@ public class Bot {
      * @return BotResponse
      */
     private BotResponse survey(Command command) {
+        if (command.getCommandText().length < 2) {
+            return Error.MISSING_ARG;
+        }
         return switch (command.getCommandText()[1]) {
             case "open" -> surveyOpen(command);
             case "close" -> surveyClose(command);
