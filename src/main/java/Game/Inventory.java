@@ -1,5 +1,7 @@
 package Game;
 
+import Game.Item.Item;
+
 import java.util.ArrayList;
 
 public class Inventory {

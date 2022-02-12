@@ -1,14 +1,16 @@
-package Game;
+package Game.Item;
 
 public class Item {
     private String NAME;
     private String DESCRIPTION;
-    private long VALUE;
+    private double VALUE;
+    private double WEIGHT;
 
-    public Item(String name, String description, long value) {
+    public Item(String name, String description, double value, double weight) {
         this.NAME = name;
         this.DESCRIPTION = description;
         this.VALUE = value;
+        this.WEIGHT = weight;
     }
 
     public String getName() {
@@ -19,7 +21,11 @@ public class Item {
         return DESCRIPTION;
     }
 
-    public long getValue() {
+    public double getValue() {
         return VALUE;
+    }
+
+    public double getWeight() {
+        return WEIGHT;
     }
 }

@@ -1,5 +1,8 @@
 package Game;
 
+import Game.Item.Equipable;
+
+// TODO: make it specific slot based
 public class Equipment {
     private Equipable[] items;
 
