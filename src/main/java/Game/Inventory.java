@@ -8,6 +8,7 @@ public class Inventory {
 
     public Inventory() {
         this.items = new ArrayList<>();
+        this.gold = 10;
     }
 
     public void addItem(Item item) {

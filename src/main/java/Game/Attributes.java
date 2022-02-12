@@ -41,27 +41,27 @@ public class Attributes {
         return charisma;
     }
 
-    public void addStrength(long amount) {
+    public void modStrength(long amount) {
         strength += amount;
     }
 
-    public void addConstitution(long amount) {
+    public void modConstitution(long amount) {
         constitution += amount;
     }
 
-    public void addDexterity(long amount) {
+    public void modDexterity(long amount) {
         dexterity += amount;
     }
 
-    public void addIntelligence(long amount) {
+    public void modIntelligence(long amount) {
         intelligence += amount;
     }
 
-    public void addWisdom(long amount) {
+    public void modWisdom(long amount) {
         wisdom += amount;
     }
 
-    public void addCharisma(long amount) {
+    public void modCharisma(long amount) {
         charisma += amount;
     }
 }

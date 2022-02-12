@@ -1,13 +1,13 @@
 package Game;
 
-public class Player {
+public class Character {
     private final String NAME;
     private final Attributes ATTRIBUTES;
     private final Stats STATS;
     private final Equipment EQUIPMENT;
     private final Inventory INVENTORY;
 
-    public Player(String name) {
+    public Character(String name) {
         this.NAME = name;
         this.ATTRIBUTES = new Attributes();
         this.STATS = new Stats(this.ATTRIBUTES);
