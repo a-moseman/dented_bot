@@ -1,24 +1,15 @@
 package Game.Item;
 
-public class Item {
-    private String NAME;
-    private String DESCRIPTION;
+import Game.Entity;
+
+public class Item extends Entity {
     private double VALUE;
     private double WEIGHT;
 
     public Item(String name, String description, double value, double weight) {
-        this.NAME = name;
-        this.DESCRIPTION = description;
+        super(name, description);
         this.VALUE = value;
         this.WEIGHT = weight;
-    }
-
-    public String getName() {
-        return NAME;
-    }
-
-    public String getDescription() {
-        return DESCRIPTION;
     }
 
     public double getValue() {
