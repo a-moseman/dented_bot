@@ -63,7 +63,7 @@ public class User implements Serializable {
         long old = lastActivityTime;
         lastActivityTime = System.nanoTime();
         long ns = lastActivityTime - old;
-        updateEXP((double) ns / 1_000_000_000);
+        updateEXP((double) ns / Util.NANOSECONDS_PER_SECOND);
         boolean leveledUp = updateLevel();
 
         updateAge();
@@ -85,7 +85,7 @@ public class User implements Serializable {
      * presence = activity / days
      */
     private void updatePresence() {
-        presence = (double) activity / ((double) age / 1_000_000_000 / 60 / 60 / 24 + 1);
+        presence = (double) activity / ((double) age / Util.NANOSECONDS_PER_SECOND / 60 / 60 / 24 + 1);
     }
 
     private double calculateEXPGain(double secs) {
