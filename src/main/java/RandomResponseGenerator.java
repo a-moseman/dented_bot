@@ -1,25 +1,22 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
 public class RandomResponseGenerator {
-    private final ArrayList<String> RESPONSES;
+    private final String[] RESPONSES;
     private ArrayList<String> unused;
     private final Random RANDOM;
 
-    public RandomResponseGenerator(Random random) {
-        this.RESPONSES = new Loader()
-                .load(this, "responses.json")
-                .getResponses();;
+    public RandomResponseGenerator(Random random, String responsesPath) {
+        this.RESPONSES = FileManager.loadResponses(responsesPath);
         this.RANDOM = random;
         this.unused = new ArrayList<>();
         shuffle();
     }
 
     private void shuffle() {
-        for (String string : RESPONSES) {
-            unused.add(string);
-        }
+        unused.addAll(Arrays.asList(RESPONSES));
         Collections.shuffle(unused);
     }
 

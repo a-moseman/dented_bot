@@ -20,11 +20,11 @@ public class Bot {
      * Instantiate a new bot.
      * @param chanceOfRandomResponse The chance of a random response.
      */
-    public Bot(double chanceOfRandomResponse) {
+    public Bot(double chanceOfRandomResponse, String responsePath) {
         this.START_NANO_TIME = System.nanoTime();
         this.CHANCE_OF_RANDOM_RESPONSE = chanceOfRandomResponse;
         this.RANDOM = new Random();
-        this.RANDOM_RESPONSE_GENERATOR = new RandomResponseGenerator(this.RANDOM);
+        this.RANDOM_RESPONSE_GENERATOR = new RandomResponseGenerator(this.RANDOM, responsePath);
         this.SURVEY_MANAGER = new SurveyManager();
         this.USER_MANAGER = new UserManager();
 
@@ -34,6 +34,23 @@ public class Bot {
         catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    /**
+     * Set up the JDA wrapper for the bot.
+     * @param token The bot token.
+     * @return Bot
+     */
+    public Bot setupJDA(String token) {
+        try {
+            JDA jda = JDABuilder.createDefault(token)
+                    .build();
+            jda.addEventListener(new MessageListener(this));
+        }
+        catch (LoginException exception) {
+            exception.printStackTrace();
+        }
+        return this;
     }
 
     /**
@@ -62,23 +79,6 @@ public class Bot {
      */
     public long getUserLevel(String id) {
         return USER_MANAGER.getUserLevel(id);
-    }
-
-    /**
-     * Set up the JDA wrapper for the bot.
-     * @param token The bot token.
-     * @return Bot
-     */
-    public Bot setupJDA(String token) {
-        try {
-            JDA jda = JDABuilder.createDefault(token)
-                    .build();
-            jda.addEventListener(new MessageListener(this));
-        }
-        catch (LoginException exception) {
-            exception.printStackTrace();
-        }
-        return null;
     }
 
     /**
