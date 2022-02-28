@@ -16,6 +16,8 @@ public class Bot {
     private final SurveyManager SURVEY_MANAGER;
     private final UserManager USER_MANAGER;
 
+    private final boolean HAS_RANDOM_RESPONSES;
+
     /**
      * Instantiate a new bot.
      * @param chanceOfRandomResponse The chance of a random response.
@@ -24,7 +26,13 @@ public class Bot {
         this.START_NANO_TIME = System.nanoTime();
         this.CHANCE_OF_RANDOM_RESPONSE = chanceOfRandomResponse;
         this.RANDOM = new Random();
-        this.RANDOM_RESPONSE_GENERATOR = new RandomResponseGenerator(this.RANDOM, responsePath);
+        this.HAS_RANDOM_RESPONSES = FileManager.exists(responsePath);
+        if (this.HAS_RANDOM_RESPONSES) {
+            this.RANDOM_RESPONSE_GENERATOR = new RandomResponseGenerator(this.RANDOM, responsePath);
+        }
+        else {
+            this.RANDOM_RESPONSE_GENERATOR = null;
+        }
         this.SURVEY_MANAGER = new SurveyManager();
         this.USER_MANAGER = new UserManager();
 
@@ -92,7 +100,7 @@ public class Bot {
             Command command = new Command(Util.split(userMessage.substring(1)), authorName, authorID, authorUUID);
             return doCommand(command);
         }
-        else if (RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
+        else if (HAS_RANDOM_RESPONSES && RANDOM.nextDouble() < CHANCE_OF_RANDOM_RESPONSE) {
             return new BotResponse(new String[]{RANDOM_RESPONSE_GENERATOR.get()});
         }
         return null;

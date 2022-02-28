@@ -29,14 +29,9 @@ public class FileManager {
 
     public static String[] loadResponses(String path) {
         try {
-            if (exists(path)) {
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(path);
-                return (String[]) jsonObject.get("responses");
-            }
-            else {
-                return null;
-            }
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(path);
+            return (String[]) jsonObject.get("responses");
         }
         catch (Exception e) {
             e.printStackTrace();
