@@ -40,8 +40,8 @@ public class MessageListener extends ListenerAdapter {
                 }
             }
 
-            // Save every 12 hours on receiving a message
-            if ((double) (System.nanoTime() - lastActivityTime) / Util.NANOSECONDS_PER_SECOND > 60 * 60) {
+            // Save every hour upon receiving a message
+            if ((double) (System.nanoTime() - lastActivityTime) / Util.NANOSECONDS_PER_SECOND > 5) {//60 * 60) {
                 BOT.save();
                 lastActivityTime = System.nanoTime();
             }

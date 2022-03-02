@@ -162,7 +162,7 @@ public class Bot {
                 "Runtime: " + (Util.convertToReadableTime(System.nanoTime() - START_NANO_TIME)) + "\n" +
                 "Language: Java 11\n" +
                 "Discord API Wrapper: JDA\n" +
-                "Version: 3.1\n" +
+                "Version: 3.2\n" +
                 "Author: Andrew Moseman\n"});
     }
 
