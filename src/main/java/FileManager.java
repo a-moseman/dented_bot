@@ -1,3 +1,4 @@
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -101,8 +102,13 @@ public class FileManager {
     public static String[] loadResponses(String path) {
         try {
             JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(path);
-            return (String[]) jsonObject.get("responses");
+            JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(path));
+            JSONArray jsonResponses = (JSONArray) jsonObject.get("responses");
+            String[] responses = new String[jsonResponses.size()];
+            for (int i = 0; i < responses.length; i++) {
+                responses[i] = (String) jsonResponses.get(i);
+            }
+            return responses;
         }
         catch (Exception e) {
             e.printStackTrace();
