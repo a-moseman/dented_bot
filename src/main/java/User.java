@@ -22,6 +22,34 @@ public class User implements Serializable {
         this.FIRST_SEEN = System.nanoTime();
     }
 
+    /**
+     * Constructor to use when loading user data from file.
+     * @param name
+     * @param discriminator
+     * @param id
+     */
+    public User(String name,
+                String discriminator,
+                String id,
+                String uuid,
+                long firstSeen,
+                long age,
+                long lastActivityTime,
+                double exp,
+                long level,
+                double presence) {
+        this.NAME = name;
+        this.DISCRIMINATOR = discriminator;
+        this.ID = id;
+        this.UUID = uuid;
+        this.FIRST_SEEN = firstSeen;
+        this.age = age;
+        this.lastActivityTime = lastActivityTime;
+        this.exp = exp;
+        this.level = level;
+        this.presence = presence;
+    }
+
     public String getName() {
         return NAME;
     }
@@ -38,8 +66,20 @@ public class User implements Serializable {
         return UUID;
     }
 
+    public long getFirstSeen() {
+        return FIRST_SEEN;
+    }
+
+    public long getAge() {
+        return age;
+    }
+
     public long getActivity() {
         return activity;
+    }
+
+    public long getLastActivityTime() {
+        return lastActivityTime;
     }
 
     public double getExp() {
@@ -52,10 +92,6 @@ public class User implements Serializable {
 
     public double getPresence() {
         return presence;
-    }
-
-    public long getAge() {
-        return age;
     }
 
     public boolean incrementActivity() {

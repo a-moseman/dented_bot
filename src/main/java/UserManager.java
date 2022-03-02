@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Hashtable;
 
 public class UserManager {
@@ -9,24 +10,18 @@ public class UserManager {
         this.users = new Hashtable<>();
     }
 
+    /**
+     * TODO: save to users.json
+     */
     public void save() {
-        try {
-            FileManager.save(PATH, users);
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        FileManager.saveUserData(users);
     }
 
+    /**
+     * TODO: load from users.json
+     */
     public void load() {
-        try {
-            if (FileManager.exists(PATH)) {
-                users = (Hashtable<String, User>) FileManager.load(PATH);
-            }
-        }
-        catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        users = FileManager.loadUserData();
     }
 
     public void addUser(String name, String discriminator, String id) {
