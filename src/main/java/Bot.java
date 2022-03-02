@@ -160,7 +160,7 @@ public class Bot {
         }
         return new BotResponse(new String[]{"Info:\n" +
                 "Runtime: " + (Util.convertToReadableTime(System.nanoTime() - START_NANO_TIME)) + "\n" +
-                "Language: Java 11\n" +
+                "Language: Java 14\n" +
                 "Discord API Wrapper: JDA\n" +
                 "Version: 3.2\n" +
                 "Author: Andrew Moseman\n"});
