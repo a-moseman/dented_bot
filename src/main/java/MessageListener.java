@@ -44,7 +44,6 @@ public class MessageListener extends ListenerAdapter {
             if ((double) (System.nanoTime() - lastActivityTime) / Util.NANOSECONDS_PER_SECOND > 60 * 60) {
                 BOT.save();
                 lastActivityTime = System.nanoTime();
-                sendMessage(event.getChannel(), "Notice: saved");
             }
         }
     }
