@@ -255,7 +255,7 @@ public class Bot {
         if (command.getCommandText().length < 1) {
             return Error.MISSING_ARG;
         }
-        if (command.getCommandText().length > 1) {
+        if (command.getCommandText().length > 2) {
             return Error.EXTRA_ARG;
         }
         if (command.getCommandText()[1].length() > 1) {
