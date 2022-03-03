@@ -22,9 +22,6 @@ public class Character {
     private double maxStamina;
     private double stamina;
 
-    private double physicalResistancePercent;
-    private double magicResistancePercent;
-
     private boolean isAlive;
 
     public Character(String name) {
@@ -104,13 +101,13 @@ public class Character {
     }
 
     public void hurt(Damage damage) {
-        //TODO: Implement damage penetration
+        // TODO: test
         switch (damage.getType()) {
             case PHYSICAL:
-                health -= damage.getAmount() * (1 - physicalResistancePercent);
+                health -= damage.getAmount() * (1 - EQUIPMENT.getPhysicalResistance() + damage.getPenetration());
                 break;
             case MAGIC:
-                health -= damage.getAmount() * (1 - magicResistancePercent);
+                health -= damage.getAmount() * (1 - EQUIPMENT.getMagicResistance() + damage.getPenetration());
                 break;
             case TRUE:
                 health -= damage.getAmount();

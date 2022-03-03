@@ -10,7 +10,7 @@ public class Inventory {
 
     public Inventory() {
         this.items = new ArrayList<>();
-        this.gold = 10;
+        this.gold = 10; // TODO: remove magic number
     }
 
     public void addItem(Item item) {
