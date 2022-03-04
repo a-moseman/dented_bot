@@ -1,6 +1,6 @@
-import GameTest.Character;
-import GameTest.Damage.Damage;
-import GameTest.Damage.DamageType;
+import Game.Character;
+import Game.Damage.Damage;
+import Game.Damage.DamageType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
