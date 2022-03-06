@@ -45,4 +45,16 @@ public class CharacterTest {
         assertEquals(100, character.getHealth(), 0);
     }
 
+    @Test
+    public void testGainExp() {
+        character.gainExp(0);
+        assertEquals(1, character.getLevel());
+        character.gainExp(100);
+        assertEquals(1, character.getLevel());
+        character.gainExp(50);
+        assertEquals(1, character.getLevel());
+        character.gainExp(50);
+        assertEquals(2, character.getLevel());
+    }
+
 }

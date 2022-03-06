@@ -52,6 +52,15 @@ public class Character {
         calculateMaxStamina();
     }
 
+    private void calculateLevel() {
+        level = (long) Math.max(1, (Math.log(exp / 100) / Math.log(2) + 1));
+    }
+
+    public void gainExp(double amount) {
+        exp += amount;
+        calculateLevel();
+    }
+
     private void calculateMaxHealth() {
         maxHealth = ATTRIBUTES.getConstitution() * 12.5;
     }
@@ -133,4 +142,11 @@ public class Character {
         return isAlive;
     }
 
+    public long getLevel() {
+        return level;
+    }
+
+    public double getExp() {
+        return exp;
+    }
 }
