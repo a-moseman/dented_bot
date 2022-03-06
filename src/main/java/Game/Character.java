@@ -63,31 +63,6 @@ public class Character {
     private void calculateMaxStamina() {
         maxStamina = ATTRIBUTES.getDexterity() * 12.5;
     }
-
-    public double getHealth() {
-        return health;
-    }
-
-    public String getName() {
-        return NAME;
-    }
-
-    public Attributes getAttributes() {
-        return ATTRIBUTES;
-    }
-
-    public Equipment getEquipment() {
-        return EQUIPMENT;
-    }
-
-    public Inventory getInventory() {
-        return INVENTORY;
-    }
-
-    public boolean getIsAlive() {
-        return isAlive;
-    }
-
     public void updateEffects() {
         for (Effect effect : effects) {
             effect.apply(this);
@@ -125,4 +100,37 @@ public class Character {
             isAlive = false;
         }
     }
+
+    public void heal(double amount) {
+        if (isAlive) {
+            health = Math.min(health + amount, maxHealth);
+        }
+    }
+
+    //---Getter Methods---\\
+
+    public double getHealth() {
+        return health;
+    }
+
+    public String getName() {
+        return NAME;
+    }
+
+    public Attributes getAttributes() {
+        return ATTRIBUTES;
+    }
+
+    public Equipment getEquipment() {
+        return EQUIPMENT;
+    }
+
+    public Inventory getInventory() {
+        return INVENTORY;
+    }
+
+    public boolean getIsAlive() {
+        return isAlive;
+    }
+
 }

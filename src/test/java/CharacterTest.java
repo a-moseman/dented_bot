@@ -39,4 +39,10 @@ public class CharacterTest {
         assertEquals(25, character.getHealth(), 0);
     }
 
+    @Test
+    public void testHeal() {
+        character.heal(100);
+        assertEquals(100, character.getHealth(), 0);
+    }
+
 }
