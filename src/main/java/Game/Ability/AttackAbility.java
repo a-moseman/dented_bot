@@ -3,14 +3,15 @@ package Game.Ability;
 import Game.Character;
 import Game.Damage.Damage;
 import Game.Damage.DamageType;
+import Game.Effect.Effect;
 
 public class AttackAbility extends Ability{
     protected AbilityScaling abilityScaling;
     protected double baseDamage;
     protected double penetration;
 
-    public AttackAbility(String name, String description, Character user, AbilityScaling abilityScaling, double baseDamage, double penetration) {
-        super(name, description, user);
+    public AttackAbility(String name, String description, Character user, Effect[] effects, AbilityScaling abilityScaling, double baseDamage, double penetration) {
+        super(name, description, user, effects);
         this.abilityScaling = abilityScaling;
         this.baseDamage = baseDamage;
         this.penetration = penetration;
