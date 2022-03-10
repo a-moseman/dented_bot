@@ -6,7 +6,7 @@ import Game.Damage.Damage;
 public class BasicAttack extends Ability{
     private double baseDamage;
 
-    public BasicAttack(String name, String description, Character user, double baseDamage, AbilityScaling abilityScaling) {
+    public BasicAttack(String name, String description, Character user, AbilityScaling abilityScaling, double baseDamage) {
         super(name, description, user, abilityScaling);
         this.baseDamage = baseDamage;
     }
@@ -17,6 +17,7 @@ public class BasicAttack extends Ability{
         double dmg = baseDamage + (baseDamage * getScalingModifier());
         double dmgPen = 0; // TODO: implement
         Damage damage = new Damage(dmg, getDamageType(), dmgPen);
+        // TODO: implement applying effects
         target.hurt(damage);
     }
 }

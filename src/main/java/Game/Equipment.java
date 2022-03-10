@@ -63,49 +63,26 @@ public class Equipment {
         return -1;
     }
 
-    public Helmet getHelmet() {
-        return helmet;
-    }
-
     public void setHelmet(Helmet helmet) {
         this.helmet = helmet;
-    }
-
-    public Breastplate getBreastplate() {
-        return breastplate;
     }
 
     public void setBreastplate(Breastplate breastplate) {
         this.breastplate = breastplate;
     }
 
-    public Gauntlets getGauntlets() {
-        return gauntlets;
-    }
 
     public void setGauntlets(Gauntlets gauntlets) {
         this.gauntlets = gauntlets;
-    }
-
-    public Greaves getGreaves() {
-        return greaves;
     }
 
     public void setGreaves(Greaves greaves) {
         this.greaves = greaves;
     }
 
-    public OneHanded getMainHand() {
-        return mainHand;
-    }
-
     public void setMainHand(OneHanded mainHand) {
         this.bothHands = null;
         this.mainHand = mainHand;
-    }
-
-    public OneHanded getOffHand() {
-        return offHand;
     }
 
     public void setOffHand(OneHanded offHand) {
@@ -114,23 +91,16 @@ public class Equipment {
         this.offHand = offHand;
     }
 
-    public TwoHanded getBothHands() {
-        return bothHands;
+    public void setOffHand(Shield shield) {
+        this.bothHands = null;
+        this.offHand = null;
+        this.shield = shield;
     }
 
     public void setBothHands(TwoHanded bothHands) {
         this.mainHand = null;
         this.offHand = null;
+        this.shield = null;
         this.bothHands = bothHands;
-    }
-
-    public Shield getShield() {
-        return shield;
-    }
-
-    public void setShield(Shield shield) {
-        this.bothHands = null;
-        this.offHand = null;
-        this.shield = shield;
     }
 }
