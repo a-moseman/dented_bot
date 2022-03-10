@@ -1,18 +1,18 @@
 package Game.Item.Weapon;
 
-import Game.Ability.BasicAttack;
+import Game.Ability.AttackAbility;
 import Game.Item.AttributeModifiers;
 import Game.Item.Equipable;
 
 public class Weapon extends Equipable {
-    private BasicAttack basicAttack;
+    private AttackAbility attackAbility;
 
-    public Weapon(String name, String description, double value, double weight, AttributeModifiers attributeModifiers, BasicAttack basicAttack) {
+    public Weapon(String name, String description, double value, double weight, AttributeModifiers attributeModifiers, AttackAbility attackAbility) {
         super(name, description, value, weight, attributeModifiers);
-        this.basicAttack = basicAttack;
+        this.attackAbility = attackAbility;
     }
 
-    public BasicAttack getBasicAttack() {
-        return basicAttack;
+    public AttackAbility getAttackAbility() {
+        return attackAbility;
     }
 }
