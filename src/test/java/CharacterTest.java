@@ -4,6 +4,8 @@ import Game.Damage.DamageType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import Game.Effect.Poison;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -55,6 +57,20 @@ public class CharacterTest {
         assertEquals(1, character.getLevel());
         character.gainExp(50);
         assertEquals(2, character.getLevel());
+    }
+
+    @Test
+    public void testPoison() {
+        character.heal(100); // reset health
+        character.giveEffect(new Poison("name", "desc", 3, new Damage(10, DamageType.TRUE, 0)));
+        character.updateEffects();
+        assertEquals(90, character.getHealth(), 0);
+        character.updateEffects();
+        assertEquals(80, character.getHealth(), 0);
+        character.updateEffects();
+        assertEquals(70, character.getHealth(), 0);
+        character.updateEffects(); // check if effect removed
+        assertEquals(70, character.getHealth(), 0);
     }
 
 }

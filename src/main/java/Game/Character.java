@@ -72,6 +72,7 @@ public class Character {
     private void calculateMaxStamina() {
         maxStamina = ATTRIBUTES.getDexterity() * 12.5;
     }
+
     public void updateEffects() {
         for (Effect effect : effects) {
             effect.apply(this);
@@ -80,7 +81,6 @@ public class Character {
     }
 
     private void removeExpiredEffects() {
-        // TODO: test
         int i = 0;
         while (i < effects.size()) {
             if (effects.get(i).hasExpired()) {
@@ -93,7 +93,6 @@ public class Character {
     }
 
     public void hurt(Damage damage) {
-        // TODO: test
         switch (damage.getType()) {
             case PHYSICAL:
                 health -= damage.getAmount() * Math.min(1 - EQUIPMENT.getPhysicalResistance() + damage.getPenetration(), 1);
@@ -114,6 +113,10 @@ public class Character {
         if (isAlive) {
             health = Math.min(health + amount, maxHealth);
         }
+    }
+
+    public void giveEffect(Effect effect) {
+        effects.add(effect);
     }
 
     //---Getter Methods---\\

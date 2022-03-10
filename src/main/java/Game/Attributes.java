@@ -1,12 +1,12 @@
 package Game;
 
 public class Attributes {
-    private long strength;
-    private long constitution;
-    private long dexterity;
-    private long intelligence;
-    private long wisdom;
-    private long charisma;
+    private int strength;
+    private int constitution;
+    private int dexterity;
+    private int intelligence;
+    private int wisdom;
+    private int charisma;
 
     public Attributes() {
         this.strength = 8;
@@ -17,51 +17,80 @@ public class Attributes {
         this.charisma = 8;
     }
 
-    public long getStrength() {
+    private double convertAttributeToModifier(int attribute) {
+        return ((double) attribute - 10) / 10;
+    }
+
+    public double getStrengthMod() {
+        return convertAttributeToModifier(strength);
+    }
+
+    public double getDexterityMod() {
+        return convertAttributeToModifier(dexterity);
+    }
+
+    public double getConstitutionMod() {
+        return convertAttributeToModifier(constitution);
+    }
+
+    public double getIntelligenceMod() {
+        return convertAttributeToModifier(intelligence);
+    }
+
+    public double getWisdomMod() {
+        return convertAttributeToModifier(wisdom);
+    }
+
+    public double getCharismaMod() {
+        return convertAttributeToModifier(charisma);
+    }
+
+
+    public int getStrength() {
         return strength;
     }
 
-    public long getConstitution() {
+    public int getConstitution() {
         return constitution;
     }
 
-    public long getDexterity() {
+    public int getDexterity() {
         return dexterity;
     }
 
-    public long getIntelligence() {
+    public int getIntelligence() {
         return intelligence;
     }
 
-    public long getWisdom() {
+    public int getWisdom() {
         return wisdom;
     }
 
-    public long getCharisma() {
+    public int getCharisma() {
         return charisma;
     }
 
-    public void modStrength(long amount) {
+    public void modStrength(int amount) {
         strength += amount;
     }
 
-    public void modConstitution(long amount) {
+    public void modConstitution(int amount) {
         constitution += amount;
     }
 
-    public void modDexterity(long amount) {
+    public void modDexterity(int amount) {
         dexterity += amount;
     }
 
-    public void modIntelligence(long amount) {
+    public void modIntelligence(int amount) {
         intelligence += amount;
     }
 
-    public void modWisdom(long amount) {
+    public void modWisdom(int amount) {
         wisdom += amount;
     }
 
-    public void modCharisma(long amount) {
+    public void modCharisma(int amount) {
         charisma += amount;
     }
 }

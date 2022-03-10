@@ -7,7 +7,7 @@ public class GameManager {
     private Location rootLocation;
 
     public GameManager() {
-        this.players = new Hashtable<String, Character>();
+        this.players = new Hashtable<>();
         this.rootLocation = new Location("root", "The root location");
     }
 
