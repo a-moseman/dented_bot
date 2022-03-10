@@ -33,6 +33,36 @@ public class Equipment {
         return magicResistance;
     }
 
+    public int getStrengthMod() {
+        // TODO: implement
+        return -1;
+    }
+
+    public int getDexterityMod() {
+        // TODO: implement
+        return -1;
+    }
+
+    public int getConstitutionMod() {
+        // TODO: implement
+        return -1;
+    }
+
+    public int getIntelligenceMod() {
+        // TODO: implement
+        return -1;
+    }
+
+    public int getWisdomMod() {
+        // TODO: implement
+        return -1;
+    }
+
+    public int getCharismaMod() {
+        // TODO: implement
+        return -1;
+    }
+
     public Helmet getHelmet() {
         return helmet;
     }

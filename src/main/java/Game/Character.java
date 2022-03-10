@@ -119,6 +119,58 @@ public class Character {
         effects.add(effect);
     }
 
+    private double convertAttributeToModifier(int attribute) {
+        return ((double) attribute - 10) / 10;
+    }
+
+    public double getStrengthScalingMod() {
+        return convertAttributeToModifier(getEffectiveStrength());
+    }
+
+    public double getDexterityScalingMod() {
+        return convertAttributeToModifier(getEffectiveDexterity());
+    }
+
+    public double getConstitutionScalingMod() {
+        return convertAttributeToModifier(getEffectiveConstitution());
+    }
+
+    public double getIntelligenceScalingMod() {
+        return convertAttributeToModifier(getEffectiveIntelligence());
+    }
+
+    public double getWisdomScalingMod() {
+        return convertAttributeToModifier(getEffectiveWisdom());
+    }
+
+    public double getCharismaScalingMod() {
+        return convertAttributeToModifier(getEffectiveCharisma());
+    }
+
+    public int getEffectiveStrength() {
+        return EQUIPMENT.getStrengthMod() + ATTRIBUTES.getStrength();
+    }
+
+    public int getEffectiveDexterity() {
+        return EQUIPMENT.getDexterityMod() + ATTRIBUTES.getDexterity();
+    }
+
+    public int getEffectiveConstitution() {
+        return EQUIPMENT.getConstitutionMod() + ATTRIBUTES.getConstitution();
+    }
+
+    public int getEffectiveIntelligence() {
+        return EQUIPMENT.getIntelligenceMod() + ATTRIBUTES.getIntelligence();
+    }
+
+    public int getEffectiveWisdom() {
+        return EQUIPMENT.getWisdomMod() + ATTRIBUTES.getWisdom();
+    }
+
+    public int getEffectiveCharisma() {
+        return EQUIPMENT.getCharismaMod() + ATTRIBUTES.getCharisma();
+    }
+
     //---Getter Methods---\\
 
     public double getHealth() {

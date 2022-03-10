@@ -17,34 +17,6 @@ public class Attributes {
         this.charisma = 8;
     }
 
-    private double convertAttributeToModifier(int attribute) {
-        return ((double) attribute - 10) / 10;
-    }
-
-    public double getStrengthScalingMod() {
-        return convertAttributeToModifier(strength);
-    }
-
-    public double getDexterityScalingMod() {
-        return convertAttributeToModifier(dexterity);
-    }
-
-    public double getConstitutionScalingMod() {
-        return convertAttributeToModifier(constitution);
-    }
-
-    public double getIntelligenceScalingMod() {
-        return convertAttributeToModifier(intelligence);
-    }
-
-    public double getWisdomScalingMod() {
-        return convertAttributeToModifier(wisdom);
-    }
-
-    public double getCharismaScalingMod() {
-        return convertAttributeToModifier(charisma);
-    }
-
     public int getStrength() {
         return strength;
     }
