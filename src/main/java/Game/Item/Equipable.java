@@ -1,11 +1,21 @@
 package Game.Item;
 
+import Game.Ability.Ability;
+
+import java.util.ArrayList;
+
 public class Equipable extends Item {
     private AttributeModifiers ATTRIBUTE_MODIFIERS;
+    private Ability[] ABILITIES;
 
-    public Equipable(String name, String description, double value, double weight, AttributeModifiers attributeModifiers) {
+    public Equipable(String name, String description, double value, double weight, AttributeModifiers attributeModifiers, Ability[] abilities) {
         super(name, description, value, weight);
         this.ATTRIBUTE_MODIFIERS = attributeModifiers;
+        this.ABILITIES = abilities;
+    }
+
+    public Ability[] getAbilities() {
+        return ABILITIES;
     }
 
     public int getStrengthMod() {
