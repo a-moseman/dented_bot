@@ -34,33 +34,81 @@ public class Equipment {
     }
 
     public int getStrengthMod() {
-        // TODO: implement
-        return -1;
+        int strengthMod = 0;
+        strengthMod += helmet == null ? 0 : helmet.getStrengthMod();
+        strengthMod += breastplate == null ? 0 : breastplate.getStrengthMod();
+        strengthMod += gauntlets == null ? 0 : gauntlets.getStrengthMod();
+        strengthMod += greaves == null ? 0 : greaves.getStrengthMod();
+        strengthMod += shield == null ? 0 : shield.getStrengthMod();
+        strengthMod += mainHand == null ? 0 : mainHand.getStrengthMod();
+        strengthMod += offHand == null ? 0 : offHand.getStrengthMod();
+        strengthMod += bothHands == null ? 0 : bothHands.getStrengthMod();
+        return strengthMod;
     }
 
     public int getDexterityMod() {
-        // TODO: implement
-        return -1;
+        int dexterityMod = 0;
+        dexterityMod += helmet == null ? 0 : helmet.getDexterityMod();
+        dexterityMod += breastplate == null ? 0 : breastplate.getDexterityMod();
+        dexterityMod += gauntlets == null ? 0 : gauntlets.getDexterityMod();
+        dexterityMod += greaves == null ? 0 : greaves.getDexterityMod();
+        dexterityMod += shield == null ? 0 : shield.getDexterityMod();
+        dexterityMod += mainHand == null ? 0 : mainHand.getDexterityMod();
+        dexterityMod += offHand == null ? 0 : offHand.getDexterityMod();
+        dexterityMod += bothHands == null ? 0 : bothHands.getDexterityMod();
+        return dexterityMod;
     }
 
     public int getConstitutionMod() {
-        // TODO: implement
-        return -1;
+        int constitutionMod = 0;
+        constitutionMod += helmet == null ? 0 : helmet.getConstitutionMod();
+        constitutionMod += breastplate == null ? 0 : breastplate.getConstitutionMod();
+        constitutionMod += gauntlets == null ? 0 : gauntlets.getConstitutionMod();
+        constitutionMod += greaves == null ? 0 : greaves.getConstitutionMod();
+        constitutionMod += shield == null ? 0 : shield.getConstitutionMod();
+        constitutionMod += mainHand == null ? 0 : mainHand.getConstitutionMod();
+        constitutionMod += offHand == null ? 0 : offHand.getConstitutionMod();
+        constitutionMod += bothHands == null ? 0 : bothHands.getConstitutionMod();
+        return constitutionMod;
     }
 
     public int getIntelligenceMod() {
-        // TODO: implement
-        return -1;
+        int intelligenceMod = 0;
+        intelligenceMod += helmet == null ? 0 : helmet.getIntelligenceMod();
+        intelligenceMod += breastplate == null ? 0 : breastplate.getIntelligenceMod();
+        intelligenceMod += gauntlets == null ? 0 : gauntlets.getIntelligenceMod();
+        intelligenceMod += greaves == null ? 0 : greaves.getIntelligenceMod();
+        intelligenceMod += shield == null ? 0 : shield.getIntelligenceMod();
+        intelligenceMod += mainHand == null ? 0 : mainHand.getIntelligenceMod();
+        intelligenceMod += offHand == null ? 0 : offHand.getIntelligenceMod();
+        intelligenceMod += bothHands == null ? 0 : bothHands.getIntelligenceMod();
+        return intelligenceMod;
     }
 
     public int getWisdomMod() {
-        // TODO: implement
-        return -1;
+        int wisdomMod = 0;
+        wisdomMod += helmet == null ? 0 : helmet.getWisdomMod();
+        wisdomMod += breastplate == null ? 0 : breastplate.getWisdomMod();
+        wisdomMod += gauntlets == null ? 0 : gauntlets.getWisdomMod();
+        wisdomMod += greaves == null ? 0 : greaves.getWisdomMod();
+        wisdomMod += shield == null ? 0 : shield.getWisdomMod();
+        wisdomMod += mainHand == null ? 0 : mainHand.getWisdomMod();
+        wisdomMod += offHand == null ? 0 : offHand.getWisdomMod();
+        wisdomMod += bothHands == null ? 0 : bothHands.getWisdomMod();
+        return wisdomMod;
     }
 
     public int getCharismaMod() {
-        // TODO: implement
-        return -1;
+        int charismaMod = 0;
+        charismaMod += helmet == null ? 0 : helmet.getCharismaMod();
+        charismaMod += breastplate == null ? 0 : breastplate.getCharismaMod();
+        charismaMod += gauntlets == null ? 0 : gauntlets.getCharismaMod();
+        charismaMod += greaves == null ? 0 : greaves.getCharismaMod();
+        charismaMod += shield == null ? 0 : shield.getCharismaMod();
+        charismaMod += mainHand == null ? 0 : mainHand.getCharismaMod();
+        charismaMod += offHand == null ? 0 : offHand.getCharismaMod();
+        charismaMod += bothHands == null ? 0 : bothHands.getCharismaMod();
+        return charismaMod;
     }
 
     public void setHelmet(Helmet helmet) {
