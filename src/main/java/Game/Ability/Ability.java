@@ -32,17 +32,17 @@ public class Ability extends Entity {
     protected double getScalingModifier() {
         switch (abilityScaling) {
             case STRENGTH:
-                return user.getAttributes().getStrengthMod();
+                return user.getAttributes().getStrengthScalingMod();
             case DEXTERITY:
-                return user.getAttributes().getDexterityMod();
+                return user.getAttributes().getDexterityScalingMod();
             case CONSTITUTION:
-                return user.getAttributes().getConstitutionMod();
+                return user.getAttributes().getConstitutionScalingMod();
             case INTELLIGENCE:
-                return user.getAttributes().getIntelligenceMod();
+                return user.getAttributes().getIntelligenceScalingMod();
             case WISDOM:
-                return user.getAttributes().getWisdomMod();
+                return user.getAttributes().getWisdomScalingMod();
             case CHARISMA:
-                return user.getAttributes().getCharismaMod();
+                return user.getAttributes().getCharismaScalingMod();
             default:
                 return 0;
         }

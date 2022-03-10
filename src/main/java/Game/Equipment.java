@@ -1,7 +1,6 @@
 package Game;
 
 import Game.Item.Armor.*;
-import Game.Item.Clothing.*;
 import Game.Item.Weapon.*;
 
 public class Equipment {
@@ -9,12 +8,10 @@ public class Equipment {
     public Breastplate breastplate;
     public Gauntlets gauntlets;
     public Greaves greaves;
-    public Shirt shirt;
-    public Pants pants;
-    public Shoes shoes;
     public OneHanded mainHand;
     public OneHanded offHand;
     public TwoHanded bothHands; // if two handed, main and off hands must be null, and vice versa
+    public Shield shield; // is treated as off hand also
 
     public double getPhysicalResistance() {
         double physicalResistance = 0;
@@ -22,16 +19,7 @@ public class Equipment {
         physicalResistance += breastplate == null ? 0 : breastplate.getPhysicalResistanceMod();
         physicalResistance += gauntlets == null ? 0 : gauntlets.getPhysicalResistanceMod();
         physicalResistance += greaves == null ? 0 : greaves.getPhysicalResistanceMod();
-        physicalResistance += shirt == null ? 0 : shirt.getPhysicalResistanceMod();
-        physicalResistance += pants == null ? 0 : pants.getPhysicalResistanceMod();
-        physicalResistance += shoes == null ? 0 : shoes.getPhysicalResistanceMod();
-        if (bothHands == null) {
-            physicalResistance += mainHand == null ? 0 : mainHand.getPhysicalResistanceMod();
-            physicalResistance += offHand == null ? 0 : offHand.getPhysicalResistanceMod();
-        }
-        else {
-            physicalResistance += bothHands.getPhysicalResistanceMod();
-        }
+        physicalResistance += shield == null ? 0 : shield.getPhysicalResistanceMod();
         return physicalResistance;
     }
 
@@ -41,16 +29,7 @@ public class Equipment {
         magicResistance += breastplate == null ? 0 : breastplate.getMagicResistanceMod();
         magicResistance += gauntlets == null ? 0 : gauntlets.getMagicResistanceMod();
         magicResistance += greaves == null ? 0 : greaves.getMagicResistanceMod();
-        magicResistance += shirt == null ? 0 : shirt.getMagicResistanceMod();
-        magicResistance += pants == null ? 0 : pants.getMagicResistanceMod();
-        magicResistance += shoes == null ? 0 : shoes.getMagicResistanceMod();
-        if (bothHands == null) {
-            magicResistance += mainHand == null ? 0 : mainHand.getMagicResistanceMod();
-            magicResistance += offHand == null ? 0 : offHand.getMagicResistanceMod();
-        }
-        else {
-            magicResistance += bothHands.getMagicResistanceMod();
-        }
+        magicResistance += shield == null ? 0 : shield.getMagicResistanceMod();
         return magicResistance;
     }
 
@@ -86,37 +65,13 @@ public class Equipment {
         this.greaves = greaves;
     }
 
-    public Shirt getShirt() {
-        return shirt;
-    }
-
-    public void setShirt(Shirt shirt) {
-        this.shirt = shirt;
-    }
-
-    public Pants getPants() {
-        return pants;
-    }
-
-    public void setPants(Pants pants) {
-        this.pants = pants;
-    }
-
-    public Shoes getShoes() {
-        return shoes;
-    }
-
-    public void setShoes(Shoes shoes) {
-        this.shoes = shoes;
-    }
-
     public OneHanded getMainHand() {
         return mainHand;
     }
 
     public void setMainHand(OneHanded mainHand) {
-        this.mainHand = mainHand;
         this.bothHands = null;
+        this.mainHand = mainHand;
     }
 
     public OneHanded getOffHand() {
@@ -124,8 +79,9 @@ public class Equipment {
     }
 
     public void setOffHand(OneHanded offHand) {
-        this.offHand = offHand;
         this.bothHands = null;
+        this.shield = null;
+        this.offHand = offHand;
     }
 
     public TwoHanded getBothHands() {
@@ -133,8 +89,18 @@ public class Equipment {
     }
 
     public void setBothHands(TwoHanded bothHands) {
-        this.bothHands = bothHands;
         this.mainHand = null;
         this.offHand = null;
+        this.bothHands = bothHands;
+    }
+
+    public Shield getShield() {
+        return shield;
+    }
+
+    public void setShield(Shield shield) {
+        this.bothHands = null;
+        this.offHand = null;
+        this.shield = shield;
     }
 }

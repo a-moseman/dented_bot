@@ -21,30 +21,29 @@ public class Attributes {
         return ((double) attribute - 10) / 10;
     }
 
-    public double getStrengthMod() {
+    public double getStrengthScalingMod() {
         return convertAttributeToModifier(strength);
     }
 
-    public double getDexterityMod() {
+    public double getDexterityScalingMod() {
         return convertAttributeToModifier(dexterity);
     }
 
-    public double getConstitutionMod() {
+    public double getConstitutionScalingMod() {
         return convertAttributeToModifier(constitution);
     }
 
-    public double getIntelligenceMod() {
+    public double getIntelligenceScalingMod() {
         return convertAttributeToModifier(intelligence);
     }
 
-    public double getWisdomMod() {
+    public double getWisdomScalingMod() {
         return convertAttributeToModifier(wisdom);
     }
 
-    public double getCharismaMod() {
+    public double getCharismaScalingMod() {
         return convertAttributeToModifier(charisma);
     }
-
 
     public int getStrength() {
         return strength;
