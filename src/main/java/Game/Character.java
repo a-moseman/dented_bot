@@ -1,5 +1,6 @@
 package Game;
 
+import Game.Ability.Ability;
 import Game.Damage.Damage;
 import Game.Effect.Effect;
 
@@ -46,10 +47,14 @@ public class Character {
     }
 
     private void calculateStats() {
-        // TODO: implement
         calculateMaxHealth();
         calculateMaxMana();
         calculateMaxStamina();
+    }
+
+    public ArrayList<Ability> getAbilities() {
+        // TODO: optimize?
+        return EQUIPMENT.getAbilities();
     }
 
     private void calculateLevel() {

@@ -1,7 +1,10 @@
 package Game;
 
+import Game.Ability.Ability;
 import Game.Item.Armor.*;
 import Game.Item.Weapon.*;
+
+import java.util.ArrayList;
 
 public class Equipment {
     public Helmet helmet;
@@ -12,6 +15,20 @@ public class Equipment {
     public OneHanded offHand;
     public TwoHanded bothHands; // if two handed, main and off hands must be null, and vice versa
     public Shield shield; // is treated as off hand also
+
+    public ArrayList<Ability> getAbilities() {
+        // TODO: optimize
+        ArrayList<Ability> abilities = new ArrayList<>();
+        abilities.addAll(helmet.getAbilities());
+        abilities.addAll(breastplate.getAbilities());
+        abilities.addAll(gauntlets.getAbilities());
+        abilities.addAll(greaves.getAbilities());
+        abilities.addAll(mainHand.getAbilities());
+        abilities.addAll(offHand.getAbilities());
+        abilities.addAll(bothHands.getAbilities());
+        abilities.addAll(shield.getAbilities());
+        return abilities;
+    }
 
     public double getPhysicalResistance() {
         double physicalResistance = 0;

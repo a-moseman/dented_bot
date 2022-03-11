@@ -31,4 +31,20 @@ public class Util {
         contents.add(content.toString()); // Add the last part of the string
         return contents.toArray(new String[0]);
     }
+
+    public Object[] mergeArrays(Object[][] arrays) {
+        int length = 0;
+        for (Object[] array : arrays) {
+            length += array.length;
+        }
+        int l = 0;
+        Object[] array = new Object[length];
+        for (int i = 0; i < arrays.length; i++) {
+            for (int j = 0; j < arrays[i].length; j++) {
+                array[l] = arrays[i][j];
+                l++;
+            }
+        }
+        return array;
+    }
 }
