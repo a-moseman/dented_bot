@@ -151,4 +151,18 @@ public class Equipment {
         this.shield = null;
         this.bothHands = bothHands;
     }
+
+    @Override
+    public String toString() {
+        String string = "Equipment:";
+        string += "\n\t Helmet: " + helmet;
+        string += "\n\t Breastplate: " + breastplate;
+        string += "\n\t Gauntlets: " + gauntlets;
+        string += "\n\t Greaves: " + greaves;
+        string += "\n\t Shield: " + shield;
+        string += "\n\t Main Hand: " + mainHand;
+        string += "\n\t Off Hand: " + offHand;
+        string += "\n\t Both Hands: " + bothHands;
+        return string;
+    }
 }
