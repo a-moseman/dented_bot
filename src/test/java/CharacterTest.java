@@ -26,7 +26,6 @@ public class CharacterTest {
     @Test
     public void testInstantiateCharacter() {
         assertEquals(100, character.getHealth(), 0);
-        // TODO: add more assert tests
     }
 
     @Test
