@@ -1,0 +1,9 @@
+[
+  {
+    "name" : "example",
+    "description" : "example",
+    "effects" : [
+      "example_effect_name"
+    ]
+  }
+]

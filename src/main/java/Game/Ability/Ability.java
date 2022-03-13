@@ -10,7 +10,7 @@ public class Ability extends Entity {
 
     public Ability(String name, String description, Character user, Effect[] effects) {
         super(name, description);
-        this.user = user;
+        this.user = user; // TODO: remove and make abilities static
         this.effects = effects;
     }
 
